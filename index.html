@@ -1,1 +1,242 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>الوليد | للمجوهرات والأحجار الكريمة</title><style>*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#0b0b0d;color:#f5f0e6}a{text-decoration:none;color:inherit}.nav{position:sticky;top:0;z-index:5;background:#0b0b0de8;backdrop-filter:blur(10px);border-bottom:1px solid #332b1b}.wrap{max-width:1100px;margin:auto;padding:0 20px}.bar{height:72px;display:flex;align-items:center;justify-content:space-between}.logo{font-size:27px;font-weight:800;color:#d7b56d}.logo span{display:block;font-size:11px;color:#aaa;font-weight:400}.links{display:flex;gap:22px;color:#ddd}.cart{border:1px solid #5e4a25;border-radius:20px;padding:8px 14px;color:#e2c37c}.hero{padding:85px 20px 70px;background:radial-gradient(circle at 75% 20%,#4d3a16 0,#17130c 25%,#0b0b0d 62%)}.hero h1{font-size:54px;margin:0 0 14px}.hero p{color:#c9c1b3;font-size:19px;max-width:620px;line-height:1.8}.btn{display:inline-block;background:#d7b56d;color:#17130c;padding:13px 22px;border-radius:8px;font-weight:800;margin-top:14px;border:0;cursor:pointer}.section{padding:55px 0}.title{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.title h2{font-size:30px;margin:0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:#151518;border:1px solid #292722;border-radius:14px;overflow:hidden}.pic{height:210px;display:grid;place-items:center;font-size:72px;background:linear-gradient(145deg,#26221b,#111113)}.info{padding:16px}.info h3{margin:0 0 7px}.price{color:#e0bd70;font-weight:800;font-size:18px}.add{margin-top:12px;width:100%;padding:10px;border:1px solid #5e4a25;background:#211b10;color:#efd08a;border-radius:8px;cursor:pointer}.about{background:#111114;border-block:1px solid #292722}.footer{padding:35px 0;color:#aaa;border-top:1px solid #292722}.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;z-index:10}.box{background:#151518;border:1px solid #5e4a25;border-radius:16px;width:min(520px,92%);padding:24px;max-height:90vh;overflow:auto}.box input{width:100%;padding:13px;margin:7px 0;background:#0b0b0d;border:1px solid #333;color:#fff;border-radius:8px}.close{float:left;cursor:pointer;color:#d7b56d}@media(max-width:800px){.links{display:none}.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:40px}}@media(max-width:480px){.grid{grid-template-columns:1fr}.pic{height:180px}}</style></head><body><nav class="nav"><div class="wrap bar"><div class="logo">الوليد<span>للمجوهرات والأحجار الكريمة</span></div><div class="links"><a href="#home">الرئيسية</a><a href="#shop">المتجر</a><a href="#about">من نحن</a><a href="#contact">تواصل</a></div><a class="cart" href="#" onclick="openCart();return false">🛒 السلة (<b id="count">0</b>)</a></div></nav><main id="home"><section class="hero"><div class="wrap"><h1>فخامة تُحكى… وحجرٌ له حكاية.</h1><p>اكتشف تشكيلة مختارة من المجوهرات والأحجار الكريمة بتصميم راقٍ، لتكون كل قطعة جزءًا من قصتك.</p><a class="btn" href="#shop">تسوّق الآن</a></div></section><section class="section" id="shop"><div class="wrap"><div class="title"><h2>مختارات الوليد</h2><span style="color:#999">الأسعار بالليرة السورية الجديدة</span></div><div class="grid" id="products"></div></div></section><section class="section about" id="about"><div class="wrap"><h2>عن متجر الوليد</h2><p style="color:#bbb;line-height:2;max-width:800px">نقدّم تجربة تسوق أنيقة للمجوهرات والأحجار الكريمة، مع اهتمام بالتفاصيل وجودة العرض وخدمة العملاء.</p></div></section></main><footer class="footer" id="contact"><div class="wrap"><b style="color:#d7b56d">الوليد للمجوهرات والأحجار الكريمة</b><p>واتساب: <a href="https://wa.me/963933797014">+963 933 797 014</a></p><small>© 2026 متجر الوليد. جميع الحقوق محفوظة.</small></div></footer><div class="modal" id="modal"><div class="box"><span class="close" onclick="closeCart()">✕</span><h2>سلة المشتريات</h2><div id="cartItems"></div><hr><b>الإجمالي: <span class="price" id="total">0</span> ل.س</b><h3>بيانات الطلب</h3><input id="name" placeholder="الاسم"><input id="phone" placeholder="رقم الهاتف"><button class="btn" style="width:100%" onclick="order()">إرسال الطلب عبر واتساب</button></div></div><script>const fallback=[{name:'خاتم فضة بحجر عقيق',icon:'💍',price:850},{name:'قلادة حجر زمرد',icon:'📿',price:1900},{name:'حجر ياقوت طبيعي',icon:'💎',price:3200},{name:'سوار فضة فاخر',icon:'✨',price:1200}];let products=fallback,cart=[],settings={whatsapp:'+963933797014',location:'سوريا – حمص – مدينة الحولة – بلدة تلذهب'};const fmt=n=>new Intl.NumberFormat('ar-SY').format(n)+' ل.س';async function load(){try{let d=await fetch('/api/store').then(r=>r.json());products=d.products;settings=d.settings}catch(e){}document.querySelector('#contact').innerHTML='<div class="wrap"><b style="color:#d7b56d">'+settings.storeName+'</b><p>واتساب: <a href="https://wa.me/'+settings.whatsapp.replace(/\D/g,'')+'">'+settings.whatsapp+'</a></p><p>📍 '+settings.location+'</p><small>© 2026 متجر الوليد. جميع الحقوق محفوظة.</small></div>';render()}function render(){document.getElementById('products').innerHTML=products.map((p,i)=>`<article class="card"><div class="pic">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover">`:p.icon||'💎'}</div><div class="info"><h3>${p.name}</h3><div class="price">${fmt(Number(p.price))}</div><button class="add" onclick="add(${i})">أضف إلى السلة</button></div></article>`).join('')}function add(i){cart.push(i);document.getElementById('count').textContent=cart.length}function openCart(){let list=document.getElementById('cartItems'),total=0;if(!cart.length){list.innerHTML='<p style="color:#aaa">السلة فارغة.</p>'}else{let c={};cart.forEach(i=>c[i]=(c[i]||0)+1);list.innerHTML=Object.entries(c).map(([i,n])=>{total+=Number(products[i].price)*n;return `<p>${products[i].name} × ${n} — ${fmt(Number(products[i].price)*n)}</p>`}).join('')}document.getElementById('total').textContent=new Intl.NumberFormat('ar-SY').format(total);document.getElementById('modal').style.display='grid'}function closeCart(){document.getElementById('modal').style.display='none'}function order(){if(!cart.length)return alert('أضف منتجًا أولاً');let name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim();if(!name||!phone)return alert('اكتب الاسم ورقم الهاتف');let c={},total=0;cart.forEach(i=>c[i]=(c[i]||0)+1);let lines=Object.entries(c).map(([i,n])=>{total+=Number(products[i].price)*n;return `${products[i].name} × ${n} — ${fmt(Number(products[i].price)*n)}`});let text=`مرحباً متجر الوليد، أريد طلب:%0A${lines.join('%0A')}%0Aالإجمالي: ${fmt(total)}%0Aالاسم: ${encodeURIComponent(name)}%0Aالهاتف: ${encodeURIComponent(phone)}`;location.href='https://wa.me/'+settings.whatsapp.replace(/\D/g,'')+'?text='+text}load();</script></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الوليد للمجوهرات والأحجار الكريمة</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#080808;
+color:#fff;
+}
+
+header{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 6%;
+border-bottom:1px solid #3d3016;
+background:#0b0b0b;
+}
+
+.logo{
+font-size:25px;
+font-weight:bold;
+color:#e2bd58;
+}
+
+nav a{
+color:#fff;
+text-decoration:none;
+margin-right:20px;
+}
+
+.hero{
+min-height:520px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:40px 20px;
+background:
+radial-gradient(circle at center,#4a3712 0,#17130a 28%,#080808 70%);
+}
+
+.hero h1{
+font-size:48px;
+margin:10px 0;
+color:#e5c568;
+}
+
+.hero p{
+font-size:20px;
+color:#ddd;
+margin-bottom:30px;
+}
+
+.btn{
+display:inline-block;
+background:#d9b653;
+color:#111;
+padding:14px 30px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+}
+
+section{
+padding:55px 6%;
+}
+
+.title{
+text-align:center;
+color:#e3c15e;
+font-size:30px;
+margin-bottom:35px;
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:22px;
+}
+
+.card{
+background:#151515;
+border:1px solid #3d3016;
+border-radius:15px;
+padding:18px;
+text-align:center;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+border-color:#d9b653;
+}
+
+.gem{
+height:190px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:75px;
+background:#0d0d0d;
+border-radius:12px;
+margin-bottom:15px;
+}
+
+.price{
+color:#e5c568;
+font-size:21px;
+font-weight:bold;
+margin:12px 0;
+}
+
+.location{
+text-align:center;
+font-size:18px;
+color:#ddd;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#25D366;
+color:#fff;
+padding:14px 20px;
+border-radius:50px;
+text-decoration:none;
+font-weight:bold;
+box-shadow:0 4px 15px #000;
+}
+
+footer{
+text-align:center;
+padding:30px;
+border-top:1px solid #333;
+color:#aaa;
+}
+
+@media(max-width:600px){
+.hero h1{font-size:34px}
+.hero{min-height:460px}
+nav{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">💎 الوليد</div>
+
+<nav>
+<a href="#products">المجوهرات</a>
+<a href="#location">موقعنا</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div>
+
+<h1>الوليد للمجوهرات</h1>
+
+<p>الفخامة تلتقي بأصالة الأحجار الكريمة</p>
+
+<a class="btn" href="#products">تسوق الآن</a>
+
+</div>
+
+</section>
+
+<section id="products">
+
+<h2 class="title">منتجاتنا المميزة</h2>
+
+<div class="products">
+
+<div class="card">
+
+<div class="gem">💍</div>
+
+<h3>خاتم زمرد فاخر</h3>
+
+<div class="price">15,000 ل.س</div>
+
+</div>
+
+<div class="card">
+
+<div class="gem">📿</div>
+
+<h3>قلادة حجر كريم</h3>
+
+<div class="price">25,000 ل.س</div>
+
+</div>
+
+<div class="card">
+
+<div class="gem">💎</div>
+
+<h3>خاتم ياقوت</h3>
+
+<div class="price">30,000 ل.س</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="location">
+
+<h2 class="title">موقع متجر الوليد</h2>
+
+<div class="location">
+📍 سوريا – حمص – مدينة الحولة – بلدة تلذهب
+</div>
+
+</section>
+
+<a class="whatsapp" href="https://wa.me/963933797014">
+💬 تواصل معنا عبر واتساب
+</a>
+
+<footer>
+© 2026 متجر الوليد للمجوهرات والأحجار الكريمة
+</footer>
+
+</body>
+</html>
