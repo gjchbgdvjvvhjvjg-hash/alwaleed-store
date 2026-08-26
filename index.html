@@ -881,6 +881,216 @@ loadProducts();
 
 update();
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://lxalfbcvibapprsyyrwd.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
+
+const supabaseClient =
+supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let cart = [];
+
+async function loadProducts() {
+
+    const { data, error } =
+        await supabaseClient
+        .from("products")
+        .select("*")
+        .order("id", { ascending: true });
+
+    if (error) {
+        console.error(error);
+        alert("حدث خطأ في تحميل المنتجات");
+        return;
+    }
+
+    const box = document.querySelector(".products");
+
+    box.innerHTML = "";
+
+    data.forEach(product => {
+
+        box.innerHTML += `
+        <div class="card">
+
+            <div class="gem">
+                <div style="font-size:80px">💎</div>
+            </div>
+
+            <h3>${product.name}</h3>
+
+            <div class="price">
+                ${Number(product.price).toLocaleString()} ل.س
+            </div>
+
+            <button class="buy-btn"
+                onclick="add('${product.name.replace(/'/g, "\\'")}', ${product.price})">
+                🛒 إضافة للسلة
+            </button>
+
+        </div>
+        `;
+
+    });
+
+}
+
+function add(name, price) {
+
+    let item = cart.find(x => x.name === name);
+
+    if (item) {
+        item.qty++;
+    } else {
+        cart.push({
+            name: name,
+            price: Number(price),
+            qty: 1
+        });
+    }
+
+    update();
+
+    alert("تمت إضافة المنتج إلى السلة 🛒");
+}
+
+function update() {
+
+    const box = document.getElementById("items");
+
+    let total = 0;
+    let count = 0;
+
+    box.innerHTML = "";
+
+    if (cart.length === 0) {
+
+        box.innerHTML =
+        "<p style='text-align:center;color:#aaa'>السلة فارغة 🛒</p>";
+
+    } else {
+
+        cart.forEach((item, index) => {
+
+            const subtotal = item.price * item.qty;
+
+            total += subtotal;
+            count += item.qty;
+
+            box.innerHTML += `
+            <div class="cart-item">
+
+                <h3>${item.name}</h3>
+
+                <div>
+                    ${item.price.toLocaleString()} ل.س
+                </div>
+
+                <div class="quantity">
+
+                    <button onclick="change(${index}, -1)">−</button>
+
+                    <strong>${item.qty}</strong>
+
+                    <button onclick="change(${index}, 1)">+</button>
+
+                    <button class="remove"
+                        onclick="removeItem(${index})">
+                        حذف
+                    </button>
+
+                </div>
+
+            </div>
+            `;
+
+        });
+
+    }
+
+    document.getElementById("count").textContent = count;
+
+    document.getElementById("total").textContent =
+        total.toLocaleString();
+}
+
+function change(index, value) {
+
+    cart[index].qty += value;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    update();
+}
+
+function removeItem(index) {
+
+    cart.splice(index, 1);
+
+    update();
+}
+
+function openCart() {
+
+    document.getElementById("overlay").style.display = "block";
+
+    update();
+}
+
+function closeCart() {
+
+    document.getElementById("overlay").style.display = "none";
+}
+
+function sendOrder() {
+
+    if (cart.length === 0) {
+
+        alert("السلة فارغة.");
+
+        return;
+    }
+
+    let message =
+        "مرحباً، أريد طلب:%0A%0A";
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        const subtotal =
+            item.price * item.qty;
+
+        total += subtotal;
+
+        message +=
+            "💎 " + item.name +
+            " — الكمية: " + item.qty +
+            " — " +
+            subtotal.toLocaleString() +
+            " ل.س%0A";
+    });
+
+    message +=
+        "%0A💰 المجموع: " +
+        total.toLocaleString() +
+        " ل.س";
+
+    window.open(
+        "https://wa.me/963933797014?text=" + message,
+        "_blank"
+    );
+}
+
+update();
+
+loadProducts();
 </script>
 
 </body>
