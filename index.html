@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>الوليد للمجوهرات والأحجار الكريمة</title>
 
 <style>
@@ -16,13 +17,13 @@ color:#fff;
 }
 
 header{
-height:70px;
+height:72px;
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:0 6%;
-border-bottom:1px solid #3d3016;
 background:#0b0b0b;
+border-bottom:1px solid #3d3016;
 position:sticky;
 top:0;
 z-index:1000;
@@ -31,13 +32,13 @@ z-index:1000;
 .logo{
 font-size:25px;
 font-weight:bold;
-color:#e2bd58;
+color:#e5c568;
 }
 
 nav a{
 color:#fff;
 text-decoration:none;
-margin-right:20px;
+margin:0 10px;
 }
 
 .cart-btn{
@@ -48,24 +49,23 @@ padding:11px 18px;
 border-radius:8px;
 font-weight:bold;
 cursor:pointer;
-font-size:15px;
 }
 
 .hero{
-min-height:520px;
+min-height:540px;
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
 padding:40px 20px;
 background:
-radial-gradient(circle at center,#4a3712 0,#17130a 28%,#080808 70%);
+radial-gradient(circle at center,#4a3712 0,#17130a 30%,#080808 70%);
 }
 
 .hero h1{
 font-size:48px;
-margin:10px 0;
 color:#e5c568;
+margin:10px 0;
 }
 
 .hero p{
@@ -85,26 +85,26 @@ font-weight:bold;
 }
 
 section{
-padding:55px 6%;
+padding:60px 6%;
 }
 
 .title{
 text-align:center;
-color:#e3c15e;
 font-size:30px;
+color:#e3c15e;
 margin-bottom:35px;
 }
 
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:22px;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:24px;
 }
 
 .card{
 background:#151515;
 border:1px solid #3d3016;
-border-radius:15px;
+border-radius:16px;
 padding:18px;
 text-align:center;
 transition:.3s;
@@ -116,40 +116,80 @@ border-color:#d9b653;
 }
 
 .gem{
-height:190px;
+height:210px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:75px;
 background:#0d0d0d;
 border-radius:12px;
 margin-bottom:15px;
+overflow:hidden;
+}
+
+.gem svg{
+width:150px;
+height:150px;
 }
 
 .price{
-color:#e5c568;
 font-size:21px;
 font-weight:bold;
+color:#e5c568;
 margin:12px 0;
 }
 
 .buy-btn{
-display:inline-block;
-margin-top:10px;
 background:#25D366;
-color:#fff;
-padding:12px 22px;
+color:white;
 border:0;
+padding:12px 22px;
 border-radius:8px;
-text-decoration:none;
 font-weight:bold;
 cursor:pointer;
 }
 
-.location{
+.about{
+max-width:850px;
+margin:auto;
 text-align:center;
-font-size:18px;
+line-height:2;
 color:#ddd;
+}
+
+.info-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:30px;
+}
+
+.info{
+background:#121212;
+border:1px solid #3d3016;
+border-radius:14px;
+padding:25px;
+text-align:center;
+}
+
+.info strong{
+display:block;
+color:#e5c568;
+font-size:20px;
+margin-bottom:10px;
+}
+
+.why{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.why div{
+background:#121212;
+border-radius:14px;
+padding:25px;
+text-align:center;
+border:1px solid #29200e;
 }
 
 .whatsapp{
@@ -157,72 +197,52 @@ position:fixed;
 bottom:20px;
 left:20px;
 background:#25D366;
-color:#fff;
+color:white;
 padding:14px 20px;
 border-radius:50px;
 text-decoration:none;
 font-weight:bold;
+z-index:1500;
 box-shadow:0 4px 15px #000;
-z-index:1000;
 }
-
-footer{
-text-align:center;
-padding:30px;
-border-top:1px solid #333;
-color:#aaa;
-}
-
-/* السلة */
 
 .cart-overlay{
 display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.75);
-z-index:2000;
+background:rgba(0,0,0,.8);
+z-index:3000;
 }
 
 .cart{
 position:absolute;
-top:0;
 right:0;
+top:0;
 width:100%;
 max-width:430px;
 height:100%;
 background:#111;
 padding:25px;
 overflow-y:auto;
-box-shadow:-5px 0 20px #000;
 }
 
-.cart h2{
-color:#e5c568;
-margin-top:0;
-}
-
-.close-cart{
+.close{
 position:absolute;
 left:20px;
 top:20px;
 background:#333;
-color:#fff;
+color:white;
 border:0;
 border-radius:50%;
 width:35px;
 height:35px;
+font-size:20px;
 cursor:pointer;
-font-size:18px;
 }
 
 .cart-item{
-border-bottom:1px solid #333;
 padding:15px 0;
-}
-
-.cart-item h3{
-margin:0 0 8px;
-color:#fff;
+border-bottom:1px solid #333;
 }
 
 .quantity{
@@ -235,16 +255,16 @@ margin-top:10px;
 .quantity button{
 background:#d9b653;
 border:0;
+border-radius:5px;
 width:30px;
 height:30px;
-border-radius:5px;
-font-weight:bold;
 cursor:pointer;
+font-weight:bold;
 }
 
 .remove{
 background:#b32626!important;
-color:#fff;
+color:white;
 width:auto!important;
 padding:5px 10px;
 }
@@ -258,29 +278,26 @@ margin:25px 0;
 
 .checkout{
 width:100%;
-background:#25D366;
-color:#fff;
-border:0;
 padding:15px;
+background:#25D366;
+border:0;
 border-radius:8px;
+color:white;
 font-size:17px;
 font-weight:bold;
 cursor:pointer;
 }
 
-.empty{
+footer{
+padding:30px;
 text-align:center;
 color:#aaa;
-padding:40px 10px;
+border-top:1px solid #333;
 }
 
 @media(max-width:600px){
 .hero h1{font-size:34px}
-.hero{min-height:460px}
 nav{display:none}
-.cart{
-max-width:100%;
-}
 }
 </style>
 </head>
@@ -293,11 +310,12 @@ max-width:100%;
 
 <nav>
 <a href="#products">المجوهرات</a>
+<a href="#about">من نحن</a>
 <a href="#location">موقعنا</a>
 </nav>
 
 <button class="cart-btn" onclick="openCart()">
-🛒 السلة (<span id="cartCount">0</span>)
+🛒 السلة (<span id="count">0</span>)
 </button>
 
 </header>
@@ -305,66 +323,195 @@ max-width:100%;
 <section class="hero">
 
 <div>
-
 <h1>الوليد للمجوهرات</h1>
 
-<p>الفخامة تلتقي بأصالة الأحجار الكريمة</p>
+<p>
+الفخامة تلتقي بأصالة الأحجار الكريمة
+</p>
 
-<a class="btn" href="#products">تسوق الآن</a>
-
+<a class="btn" href="#products">
+تسوق الآن
+</a>
 </div>
 
 </section>
 
 <section id="products">
 
-<h2 class="title">منتجاتنا المميزة</h2>
+<h2 class="title">💎 منتجاتنا المميزة</h2>
 
 <div class="products">
 
+<!-- زمرد -->
+
 <div class="card">
 
-<div class="gem">💍</div>
+<div class="gem">
+
+<svg viewBox="0 0 200 200">
+<polygon points="100,10 175,55 150,160 100,190 50,160 25,55"
+fill="#087f5b"
+stroke="#65e6bd"
+stroke-width="5"/>
+<polygon points="100,30 150,65 135,145 100,165 65,145 50,65"
+fill="#12a77b"/>
+</svg>
+
+</div>
 
 <h3>خاتم زمرد فاخر</h3>
 
 <div class="price">15,000 ل.س</div>
 
 <button class="buy-btn"
-onclick="addToCart('خاتم زمرد فاخر',15000)">
-🛒 إضافة إلى السلة
+onclick="add('خاتم زمرد فاخر',15000)">
+🛒 إضافة للسلة
 </button>
 
 </div>
 
+<!-- عقيق -->
+
 <div class="card">
 
-<div class="gem">📿</div>
+<div class="gem">
 
-<h3>قلادة حجر كريم</h3>
+<svg viewBox="0 0 200 200">
+<polygon points="100,10 175,50 160,150 100,190 40,150 25,50"
+fill="#9d2b1e"
+stroke="#e77c62"
+stroke-width="5"/>
+<polygon points="100,35 145,65 135,135 100,160 65,135 55,65"
+fill="#c4482f"/>
+</svg>
 
-<div class="price">25,000 ل.س</div>
+</div>
+
+<h3>حجر عقيق فاخر</h3>
+
+<div class="price">20,000 ل.س</div>
 
 <button class="buy-btn"
-onclick="addToCart('قلادة حجر كريم',25000)">
-🛒 إضافة إلى السلة
+onclick="add('حجر عقيق فاخر',20000)">
+🛒 إضافة للسلة
 </button>
 
 </div>
 
+<!-- ياقوت -->
+
 <div class="card">
 
-<div class="gem">💎</div>
+<div class="gem">
+
+<svg viewBox="0 0 200 200">
+<polygon points="100,10 175,55 150,160 100,190 50,160 25,55"
+fill="#8e1235"
+stroke="#ff6b91"
+stroke-width="5"/>
+<polygon points="100,30 150,65 135,145 100,165 65,145 50,65"
+fill="#c2184b"/>
+</svg>
+
+</div>
 
 <h3>خاتم ياقوت</h3>
 
 <div class="price">30,000 ل.س</div>
 
 <button class="buy-btn"
-onclick="addToCart('خاتم ياقوت',30000)">
-🛒 إضافة إلى السلة
+onclick="add('خاتم ياقوت',30000)">
+🛒 إضافة للسلة
 </button>
 
+</div>
+
+<!-- فيروز -->
+
+<div class="card">
+
+<div class="gem">
+
+<svg viewBox="0 0 200 200">
+<polygon points="100,10 175,55 150,160 100,190 50,160 25,55"
+fill="#168c91"
+stroke="#6ee7df"
+stroke-width="5"/>
+<polygon points="100,35 150,65 135,145 100,165 65,145 50,65"
+fill="#2db8b0"/>
+</svg>
+
+</div>
+
+<h3>حجر فيروز طبيعي</h3>
+
+<div class="price">18,000 ل.س</div>
+
+<button class="buy-btn"
+onclick="add('حجر فيروز طبيعي',18000)">
+🛒 إضافة للسلة
+</button>
+
+</div>
+
+</div>
+</section>
+
+<section id="about">
+
+<h2 class="title">من نحن</h2>
+
+<div class="about">
+
+<p>
+متجر الوليد للمجوهرات والأحجار الكريمة يهتم بتقديم
+قطع مميزة تجمع بين الفخامة والأصالة، مع خدمة مباشرة
+وسريعة للزبائن عبر واتساب.
+</p>
+
+<div class="info-grid">
+
+<div class="info">
+<strong>👤 الإدارة</strong>
+محمد حسنو – أبو وليد
+</div>
+
+<div class="info">
+<strong>🕗 ساعات العمل</strong>
+يوميًا من 8:00 صباحًا<br>
+حتى 8:00 مساءً
+</div>
+
+<div class="info">
+<strong>📱 التواصل</strong>
+واتساب: 963933797014
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<h2 class="title">⭐ لماذا الوليد؟</h2>
+
+<div class="why">
+
+<div>
+<h3>💎 جودة مميزة</h3>
+<p>اختيار منتجات وأحجار بعناية.</p>
+</div>
+
+<div>
+<h3>🤝 خدمة مباشرة</h3>
+<p>تواصل سريع ومباشر عبر واتساب.</p>
+</div>
+
+<div>
+<h3>✨ فخامة وأصالة</h3>
+<p>تصميم متجر يعكس قيمة المجوهرات.</p>
 </div>
 
 </div>
@@ -373,10 +520,10 @@ onclick="addToCart('خاتم ياقوت',30000)">
 
 <section id="location">
 
-<h2 class="title">موقع متجر الوليد</h2>
+<h2 class="title">📍 موقع متجر الوليد</h2>
 
-<div class="location">
-📍 سوريا – حمص – مدينة الحولة – بلدة تلذهب
+<div class="about">
+سوريا – حمص – مدينة الحولة – بلدة تلذهب
 </div>
 
 </section>
@@ -384,27 +531,25 @@ onclick="addToCart('خاتم ياقوت',30000)">
 <a class="whatsapp"
 href="https://wa.me/963933797014"
 target="_blank">
-💬 تواصل معنا عبر واتساب
+💬 واتساب
 </a>
 
 <footer>
 © 2026 متجر الوليد للمجوهرات والأحجار الكريمة
 </footer>
 
-<!-- السلة -->
-
-<div class="cart-overlay" id="cartOverlay">
+<div class="cart-overlay" id="overlay">
 
 <div class="cart">
 
-<button class="close-cart" onclick="closeCart()">×</button>
+<button class="close" onclick="closeCart()">×</button>
 
 <h2>🛒 سلة المشتريات</h2>
 
-<div id="cartItems"></div>
+<div id="items"></div>
 
 <div class="total">
-المجموع: <span id="cartTotal">0</span> ل.س
+المجموع: <span id="total">0</span> ل.س
 </div>
 
 <button class="checkout" onclick="sendOrder()">
@@ -417,66 +562,61 @@ target="_blank">
 
 <script>
 
-let cart = [];
+let cart=[];
 
-function addToCart(name, price){
+function add(name,price){
 
-const existing = cart.find(item => item.name === name);
+let item=cart.find(x=>x.name===name);
 
-if(existing){
-existing.quantity++;
+if(item){
+item.qty++;
 }else{
 cart.push({
 name:name,
 price:price,
-quantity:1
+qty:1
 });
 }
 
-updateCart();
+update();
 
 alert("تمت إضافة المنتج إلى السلة 🛒");
-
 }
 
-function updateCart(){
+function update(){
 
-const cartItems = document.getElementById("cartItems");
-const cartCount = document.getElementById("cartCount");
-const cartTotal = document.getElementById("cartTotal");
+let box=document.getElementById("items");
+let total=0;
+let count=0;
 
-cartItems.innerHTML = "";
+box.innerHTML="";
 
-let total = 0;
-let count = 0;
+if(cart.length===0){
 
-if(cart.length === 0){
-
-cartItems.innerHTML =
-'<div class="empty">السلة فارغة حاليًا 🛒</div>';
+box.innerHTML=
+"<p style='text-align:center;color:#aaa'>السلة فارغة 🛒</p>";
 
 }else{
 
 cart.forEach((item,index)=>{
 
-total += item.price * item.quantity;
-count += item.quantity;
+total+=item.price*item.qty;
+count+=item.qty;
 
-const div = document.createElement("div");
+box.innerHTML+=`
+<div class="cart-item">
 
-div.className = "cart-item";
-
-div.innerHTML = `
 <h3>${item.name}</h3>
+
 <div>${item.price.toLocaleString()} ل.س</div>
 
 <div class="quantity">
 
-<button onclick="changeQuantity(${index},-1)">−</button>
+<button onclick="change(${index},-1)">−</button>
 
-<strong>${item.quantity}</strong>
+<strong>${item.qty}</strong>
 
-<button onclick="changeQuantity(${index},1)">+</button>
+<button onclick="change(${index},1)">+</button>
 
 <button class="remove"
 onclick="removeItem(${index})">
@@ -484,95 +624,318 @@ onclick="removeItem(${index})">
 </button>
 
 </div>
-`;
 
-cartItems.appendChild(div);
+</div>
+`;
 
 });
 
 }
 
-cartCount.textContent = count;
-cartTotal.textContent = total.toLocaleString();
+document.getElementById("count").textContent=count;
+document.getElementById("total").textContent=
+total.toLocaleString();
 
 }
 
-function changeQuantity(index,change){
+function change(index,value){
 
-cart[index].quantity += change;
+cart[index].qty+=value;
 
-if(cart[index].quantity <= 0){
+if(cart[index].qty<=0){
 cart.splice(index,1);
 }
 
-updateCart();
-
+update();
 }
 
 function removeItem(index){
 
 cart.splice(index,1);
-
-updateCart();
+update();
 
 }
 
 function openCart(){
 
-document.getElementById("cartOverlay").style.display = "block";
+document.getElementById("overlay").style.display="block";
 
-updateCart();
+update();
 
 }
 
 function closeCart(){
 
-document.getElementById("cartOverlay").style.display = "none";
+document.getElementById("overlay").style.display="none";
 
 }
 
 function sendOrder(){
 
-if(cart.length === 0){
+if(cart.length===0){
 
-alert("السلة فارغة. أضف منتجًا أولًا.");
+alert("السلة فارغة.");
 
 return;
-
 }
 
-let message =
-"مرحباً، أريد طلب المنتجات التالية من متجر الوليد:%0A%0A";
+let message=
+"مرحباً، أريد طلب:%0A%0A";
 
-let total = 0;
+let total=0;
 
 cart.forEach(item=>{
 
-const subtotal = item.price * item.quantity;
+let subtotal=item.price*item.qty;
 
-total += subtotal;
+total+=subtotal;
 
-message +=
-"💎 " + item.name +
-" — الكمية: " + item.quantity +
-" — السعر: " + subtotal.toLocaleString() +
+message+=
+"💎 "+item.name+
+" — الكمية: "+item.qty+
+" — "+subtotal.toLocaleString()+
 " ل.س%0A";
 
 });
 
-message +=
-"%0A💰 المجموع الكلي: " +
-total.toLocaleString() +
+message+=
+"%0A💰 المجموع: "+
+total.toLocaleString()+
 " ل.س";
 
-const whatsappURL =
-"https://wa.me/963933797014?text=" + message;
-
-window.open(whatsappURL,"_blank");
+window.open(
+"https://wa.me/963933797014?text="+message,
+"_blank"
+);
 
 }
 
-updateCart();
+update();
+
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>لوحة تحكم الوليد</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#080808;
+color:#fff;
+}
+
+header{
+padding:22px 6%;
+background:#0d0d0d;
+border-bottom:1px solid #3d3016;
+}
+
+h1{
+margin:0;
+color:#e5c568;
+}
+
+.container{
+padding:35px 6%;
+max-width:1100px;
+margin:auto;
+}
+
+.panel{
+background:#151515;
+border:1px solid #3d3016;
+border-radius:15px;
+padding:25px;
+margin-bottom:25px;
+}
+
+input{
+width:100%;
+padding:13px;
+margin:8px 0;
+background:#0b0b0b;
+border:1px solid #444;
+border-radius:7px;
+color:#fff;
+}
+
+button{
+background:#d9b653;
+border:0;
+padding:12px 20px;
+border-radius:7px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+.product{
+border-bottom:1px solid #333;
+padding:15px 0;
+}
+
+.delete{
+background:#b32626;
+color:#fff;
+}
+
+.success{
+color:#25D366;
+margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>💎 لوحة تحكم متجر الوليد</h1>
+</header>
+
+<div class="container">
+
+<div class="panel">
+
+<h2>➕ إضافة منتج</h2>
+
+<input id="name" placeholder="اسم المنتج">
+
+<input id="price" type="number" placeholder="السعر">
+
+<button onclick="addProduct()">
+إضافة المنتج
+</button>
+
+<div id="message"></div>
+
+</div>
+
+<div class="panel">
+
+<h2>📦 المنتجات</h2>
+
+<div id="products"></div>
+
+</div>
+
+<div class="panel">
+
+<h2>🏪 معلومات المتجر</h2>
+
+<p>👤 الإدارة: محمد حسنو – أبو وليد</p>
+
+<p>🕗 ساعات العمل: 8 صباحًا – 8 مساءً</p>
+
+<p>📱 واتساب: 963933797014</p>
+
+<p>📍 سوريا – حمص – مدينة الحولة – بلدة تلذهب</p>
+
+</div>
+
+</div>
+
+<script>
+
+let products=
+JSON.parse(localStorage.getItem("alwaleedProducts")||"[]");
+
+function save(){
+
+localStorage.setItem(
+"alwaleedProducts",
+JSON.stringify(products)
+);
+
+}
+
+function addProduct(){
+
+let name=
+document.getElementById("name").value.trim();
+
+let price=
+Number(document.getElementById("price").value);
+
+if(!name||!price){
+
+alert("اكتب اسم المنتج والسعر.");
+
+return;
+}
+
+products.push({
+name:name,
+price:price
+});
+
+save();
+
+document.getElementById("name").value="";
+document.getElementById("price").value="";
+
+document.getElementById("message").innerHTML=
+"<div class='success'>تمت إضافة المنتج.</div>";
+
+render();
+
+}
+
+function deleteProduct(index){
+
+products.splice(index,1);
+
+save();
+
+render();
+
+}
+
+function render(){
+
+let box=document.getElementById("products");
+
+box.innerHTML="";
+
+if(products.length===0){
+
+box.innerHTML=
+"<p>لا توجد منتجات مضافة من لوحة التحكم حتى الآن.</p>";
+
+return;
+}
+
+products.forEach((p,index)=>{
+
+box.innerHTML+=`
+
+<div class="product">
+
+<strong>${p.name}</strong>
+
+<p>${p.price.toLocaleString()} ل.س</p>
+
+<button class="delete"
+onclick="deleteProduct(${index})">
+حذف
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+render();
 
 </script>
 
