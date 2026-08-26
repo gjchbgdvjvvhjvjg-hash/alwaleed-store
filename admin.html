@@ -3,168 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إدارة متجر الوليد</title>
+
+<title>لوحة إدارة متجر الوليد</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#080808;
-color:white;
-padding:20px;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#080808;
+    color:#fff;
+}
+
+header{
+    background:#0d0d0d;
+    border-bottom:1px solid #3d3016;
+    padding:20px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    color:#e5c568;
+    font-size:24px;
+    font-weight:bold;
 }
 
 .container{
-max-width:900px;
-margin:auto;
+    max-width:1000px;
+    margin:auto;
+    padding:30px 20px;
 }
 
-h1{
-text-align:center;
-color:#e5c568;
+h1,h2{
+    color:#e5c568;
 }
 
-.box{
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:20px;
-margin-bottom:20px;
+.panel{
+    background:#151515;
+    border:1px solid #3d3016;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
 }
 
 input{
-width:100%;
-padding:14px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #444;
-background:#222;
-color:white;
-font-size:16px;
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    background:#0d0d0d;
+    border:1px solid #444;
+    border-radius:8px;
+    color:#fff;
+    font-size:16px;
 }
 
 button{
-border:0;
-padding:12px 18px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-margin:5px;
+    border:0;
+    border-radius:8px;
+    padding:12px 18px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-.login{
-background:#d9b653;
-color:#111;
-width:100%;
+.add-btn{
+    width:100%;
+    background:#25D366;
+    color:#fff;
+    margin-top:10px;
 }
 
-.add{
-background:#25D366;
-color:white;
-width:100%;
+.product{
+    background:#101010;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:18px;
+    margin-top:15px;
+}
+
+.product-name{
+    color:#e5c568;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.product-price{
+    margin:10px 0;
+    color:#ddd;
 }
 
 .edit{
-background:#d9b653;
-color:#111;
+    background:#d9b653;
+    color:#111;
+    margin-left:8px;
 }
 
 .delete{
-background:#b32626;
-color:white;
+    background:#b32626;
+    color:#fff;
 }
 
-.logout{
-background:#444;
-color:white;
-width:100%;
+.status{
+    text-align:center;
+    color:#aaa;
+    padding:15px;
 }
 
-.message{
-text-align:center;
-padding:15px;
-color:#e5c568;
-}
-
-.product{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-padding:15px 0;
-border-bottom:1px solid #333;
-}
-
-.price{
-color:#e5c568;
-font-weight:bold;
-}
-
-#adminPanel{
-display:none;
-}
-
-#loginBox{
-max-width:500px;
-margin:50px auto;
+.back{
+    background:#333;
+    color:#fff;
 }
 
 @media(max-width:600px){
-.product{
-flex-direction:column;
-align-items:stretch;
-}
+    header{
+        padding:16px;
+    }
+
+    .container{
+        padding:20px 12px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<header>
+
+<div class="logo">
+💎 الوليد - الإدارة
+</div>
+
+<button class="back" onclick="goStore()">
+🏪 المتجر
+</button>
+
+</header>
+
 <div class="container">
 
-<!-- تسجيل الدخول -->
+<h1>لوحة إدارة المنتجات</h1>
 
-<div id="loginBox" class="box">
-
-<h1>🔐 إدارة متجر الوليد</h1>
-
-<input
-id="email"
-type="email"
-placeholder="البريد الإلكتروني">
-
-<input
-id="password"
-type="password"
-placeholder="كلمة المرور">
-
-<button class="login" onclick="login()">
-تسجيل الدخول
-</button>
-
-<div id="loginMessage" class="message"></div>
-
-</div>
-
-
-<!-- لوحة الإدارة -->
-
-<div id="adminPanel">
-
-<h1>💎 لوحة إدارة متجر الوليد</h1>
-
-<div class="box">
-
-<button class="logout" onclick="logout()">
-تسجيل الخروج
-</button>
-
-</div>
-
-
-<div class="box">
+<div class="panel">
 
 <h2>➕ إضافة منتج</h2>
 
@@ -176,473 +162,18 @@ placeholder="اسم المنتج">
 <input
 id="price"
 type="number"
-placeholder="السعر">
+placeholder="السعر بالليرة السورية">
 
-<button class="add" onclick="addProduct()">
+<button
+class="add-btn"
+onclick="addProduct()">
+
 إضافة المنتج
+
 </button>
 
 </div>
 
+<div class="panel">
 
-<div class="box">
-
-<h2>💎 المنتجات</h2>
-
-<div id="products">
-<div class="message">جاري التحميل...</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<script type="module">
-
-import { createClient }
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-
-const SUPABASE_URL =
-"https://lxalfbcvibapprsyyrwd.supabase.co";
-
-
-const SUPABASE_KEY =
-"sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
-
-
-const supabase =
-createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =========================
-   التحقق من تسجيل الدخول
-========================= */
-
-async function checkUser(){
-
-const {data} =
-await supabase.auth.getSession();
-
-if(data.session){
-
-showAdmin();
-
-}else{
-
-showLogin();
-
-}
-
-}
-
-
-/* =========================
-   إظهار لوحة الإدارة
-========================= */
-
-function showAdmin(){
-
-document.getElementById("loginBox")
-.style.display="none";
-
-document.getElementById("adminPanel")
-.style.display="block";
-
-loadProducts();
-
-}
-
-
-/* =========================
-   إظهار تسجيل الدخول
-========================= */
-
-function showLogin(){
-
-document.getElementById("loginBox")
-.style.display="block";
-
-document.getElementById("adminPanel")
-.style.display="none";
-
-}
-
-
-/* =========================
-   تسجيل الدخول
-========================= */
-
-window.login =
-async function(){
-
-const email =
-document.getElementById("email")
-.value.trim();
-
-const password =
-document.getElementById("password")
-.value;
-
-
-const message =
-document.getElementById("loginMessage");
-
-
-if(!email || !password){
-
-message.textContent =
-"اكتب البريد الإلكتروني وكلمة المرور";
-
-return;
-
-}
-
-
-message.textContent =
-"جاري تسجيل الدخول...";
-
-
-const {error} =
-await supabase.auth.signInWithPassword({
-email:email,
-password:password
-});
-
-
-if(error){
-
-message.textContent =
-"بيانات الدخول غير صحيحة";
-
-console.error(error);
-
-return;
-
-}
-
-
-message.textContent="";
-
-showAdmin();
-
-};
-
-
-/* =========================
-   تسجيل الخروج
-========================= */
-
-window.logout =
-async function(){
-
-await supabase.auth.signOut();
-
-showLogin();
-
-};
-
-
-/* =========================
-   تحميل المنتجات
-========================= */
-
-async function loadProducts(){
-
-const box =
-document.getElementById("products");
-
-
-box.innerHTML =
-'<div class="message">جاري التحميل...</div>';
-
-
-const {data,error} =
-await supabase
-.from("products")
-.select("id,name,price")
-.order("id",{ascending:true});
-
-
-if(error){
-
-console.error(error);
-
-box.innerHTML =
-'<div class="message">حدث خطأ في تحميل المنتجات</div>';
-
-return;
-
-}
-
-
-if(!data.length){
-
-box.innerHTML =
-'<div class="message">لا توجد منتجات</div>';
-
-return;
-
-}
-
-
-box.innerHTML="";
-
-
-data.forEach(product=>{
-
-const div =
-document.createElement("div");
-
-div.className="product";
-
-
-div.innerHTML=`
-
-<div>
-
-<strong>${escapeHTML(product.name)}</strong>
-
-<br>
-
-<span class="price">
-${Number(product.price).toLocaleString()} ل.س
-</span>
-
-</div>
-
-<div>
-
-<button class="edit">
-تعديل
-</button>
-
-<button class="delete">
-حذف
-</button>
-
-</div>
-
-`;
-
-
-div.querySelector(".edit")
-.onclick=()=>editProduct(
-product.id,
-product.name,
-product.price
-);
-
-
-div.querySelector(".delete")
-.onclick=()=>deleteProduct(
-product.id
-);
-
-
-box.appendChild(div);
-
-});
-
-}
-
-
-/* =========================
-   إضافة منتج
-========================= */
-
-window.addProduct =
-async function(){
-
-const name =
-document.getElementById("name")
-.value.trim();
-
-const price =
-Number(
-document.getElementById("price").value
-);
-
-
-if(!name || !price){
-
-alert("اكتب اسم المنتج والسعر");
-
-return;
-
-}
-
-
-const {error} =
-await supabase
-.from("products")
-.insert({
-name:name,
-price:price
-});
-
-
-if(error){
-
-alert(
-"لم تتم الإضافة: "+
-error.message
-);
-
-console.error(error);
-
-return;
-
-}
-
-
-document.getElementById("name")
-.value="";
-
-document.getElementById("price")
-.value="";
-
-
-alert("تمت إضافة المنتج بنجاح ✅");
-
-loadProducts();
-
-};
-
-
-/* =========================
-   تعديل
-========================= */
-
-window.editProduct =
-async function(
-id,
-oldName,
-oldPrice
-){
-
-const name =
-prompt(
-"اسم المنتج:",
-oldName
-);
-
-
-if(name===null)return;
-
-
-const price =
-prompt(
-"السعر:",
-oldPrice
-);
-
-
-if(price===null)return;
-
-
-const {error} =
-await supabase
-.from("products")
-.update({
-name:name,
-price:Number(price)
-})
-.eq("id",id);
-
-
-if(error){
-
-alert(
-"خطأ في التعديل: "+
-error.message
-);
-
-return;
-
-}
-
-
-alert("تم تعديل المنتج ✅");
-
-loadProducts();
-
-};
-
-
-/* =========================
-   حذف
-========================= */
-
-window.deleteProduct =
-async function(id){
-
-if(
-!confirm(
-"هل تريد حذف هذا المنتج؟"
-)
-){
-
-return;
-
-}
-
-
-const {error} =
-await supabase
-.from("products")
-.delete()
-.eq("id",id);
-
-
-if(error){
-
-alert(
-"خطأ في الحذف: "+
-error.message
-);
-
-return;
-
-}
-
-
-alert("تم حذف المنتج 🗑️");
-
-loadProducts();
-
-};
-
-
-/* =========================
-   حماية النص
-========================= */
-
-function escapeHTML(text){
-
-return String(text)
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
-}
-
-
-/* =========================
-   بدء التطبيق
-========================= */
-
-checkUser();
-
-</script>
-
-</body>
-</html>
+<h2>💎 المنتجات
