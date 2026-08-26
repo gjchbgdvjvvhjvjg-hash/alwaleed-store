@@ -4,324 +4,137 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>الوليد للمجوهرات والأحجار الكريمة</title>
+<title>الوليد للمجوهرات</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#080808;
-  color:#fff;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#080808;
+    color:white;
 }
 
 header{
-  height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 6%;
-  background:#0b0b0b;
-  border-bottom:1px solid #3d3016;
-  position:sticky;
-  top:0;
-  z-index:1000;
+    padding:18px 6%;
+    background:#0d0d0d;
+    border-bottom:1px solid #3d3016;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
-  font-size:25px;
-  font-weight:bold;
-  color:#e5c568;
-}
-
-nav a{
-  color:#fff;
-  text-decoration:none;
-  margin:0 10px;
-}
-
-.cart-btn{
-  background:#d9b653;
-  color:#111;
-  border:0;
-  padding:11px 18px;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.hero{
-  min-height:500px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:40px 20px;
-  background:
-  radial-gradient(circle at center,#4a3712 0,#17130a 30%,#080808 70%);
-}
-
-.hero h1{
-  font-size:48px;
-  color:#e5c568;
-  margin:10px 0;
-}
-
-.hero p{
-  font-size:20px;
-  color:#ddd;
-  margin-bottom:30px;
-}
-
-.btn{
-  display:inline-block;
-  background:#d9b653;
-  color:#111;
-  padding:14px 30px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-section{
-  padding:60px 6%;
-}
-
-.title{
-  text-align:center;
-  font-size:30px;
-  color:#e3c15e;
-  margin-bottom:35px;
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:24px;
-}
-
-.card{
-  background:#151515;
-  border:1px solid #3d3016;
-  border-radius:16px;
-  padding:18px;
-  text-align:center;
-  transition:.3s;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-  border-color:#d9b653;
-}
-
-.gem{
-  height:210px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#0d0d0d;
-  border-radius:12px;
-  margin-bottom:15px;
-  overflow:hidden;
-}
-
-.gem svg{
-  width:150px;
-  height:150px;
-}
-
-.price{
-  font-size:21px;
-  font-weight:bold;
-  color:#e5c568;
-  margin:12px 0;
-}
-
-.buy-btn{
-  background:#25D366;
-  color:white;
-  border:0;
-  padding:12px 22px;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.loading{
-  text-align:center;
-  color:#e5c568;
-  font-size:20px;
-  padding:40px;
-}
-
-.error{
-  text-align:center;
-  color:#ff7777;
-  padding:30px;
-}
-
-.about{
-  max-width:850px;
-  margin:auto;
-  text-align:center;
-  line-height:2;
-  color:#ddd;
-}
-
-.info-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  margin-top:30px;
-}
-
-.info{
-  background:#121212;
-  border:1px solid #3d3016;
-  border-radius:14px;
-  padding:25px;
-  text-align:center;
-}
-
-.info strong{
-  display:block;
-  color:#e5c568;
-  font-size:20px;
-  margin-bottom:10px;
-}
-
-.why{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-}
-
-.why div{
-  background:#121212;
-  border-radius:14px;
-  padding:25px;
-  text-align:center;
-  border:1px solid #29200e;
-}
-
-.whatsapp{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  background:#25D366;
-  color:white;
-  padding:14px 20px;
-  border-radius:50px;
-  text-decoration:none;
-  font-weight:bold;
-  z-index:1500;
-  box-shadow:0 4px 15px #000;
-}
-
-.cart-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.8);
-  z-index:3000;
+    color:#e5c568;
+    font-size:24px;
+    font-weight:bold;
 }
 
 .cart{
-  position:absolute;
-  right:0;
-  top:0;
-  width:100%;
-  max-width:430px;
-  height:100%;
-  background:#111;
-  padding:25px;
-  overflow-y:auto;
+    background:#d9b653;
+    color:#111;
+    border:0;
+    padding:10px 18px;
+    border-radius:8px;
+    font-weight:bold;
 }
 
-.close{
-  position:absolute;
-  left:20px;
-  top:20px;
-  background:#333;
-  color:white;
-  border:0;
-  border-radius:50%;
-  width:35px;
-  height:35px;
-  font-size:20px;
-  cursor:pointer;
+.hero{
+    text-align:center;
+    padding:90px 20px;
+    background:radial-gradient(circle,#4a3712,#080808 70%);
 }
 
-.cart-item{
-  padding:15px 0;
-  border-bottom:1px solid #333;
+.hero h1{
+    color:#e5c568;
+    font-size:42px;
 }
 
-.quantity{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-top:10px;
+.hero p{
+    color:#ddd;
+    font-size:19px;
 }
 
-.quantity button{
-  background:#d9b653;
-  border:0;
-  border-radius:5px;
-  width:30px;
-  height:30px;
-  cursor:pointer;
-  font-weight:bold;
+section{
+    padding:55px 6%;
 }
 
-.remove{
-  background:#b32626!important;
-  color:white;
-  width:auto!important;
-  padding:5px 10px;
+.title{
+    text-align:center;
+    color:#e5c568;
+    margin-bottom:35px;
 }
 
-.total{
-  font-size:22px;
-  font-weight:bold;
-  color:#e5c568;
-  margin:25px 0;
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:22px;
 }
 
-.checkout{
-  width:100%;
-  padding:15px;
-  background:#25D366;
-  border:0;
-  border-radius:8px;
-  color:white;
-  font-size:17px;
-  font-weight:bold;
-  cursor:pointer;
+.card{
+    background:#151515;
+    border:1px solid #3d3016;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+.gem{
+    height:190px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0d0d0d;
+    border-radius:12px;
+    font-size:80px;
+}
+
+.price{
+    color:#e5c568;
+    font-size:21px;
+    font-weight:bold;
+    margin:15px;
+}
+
+.buy{
+    background:#25D366;
+    color:white;
+    border:0;
+    padding:12px 22px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.loading{
+    text-align:center;
+    color:#aaa;
+    font-size:20px;
 }
 
 footer{
-  padding:30px;
-  text-align:center;
-  color:#aaa;
-  border-top:1px solid #333;
+    text-align:center;
+    padding:30px;
+    color:#aaa;
+    border-top:1px solid #333;
 }
 
-@media(max-width:600px){
-  .hero h1{
-    font-size:34px;
-  }
-
-  nav{
-    display:none;
-  }
-
-  header{
-    padding:0 4%;
-  }
+.whatsapp{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    background:#25D366;
+    color:white;
+    padding:14px 20px;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -330,128 +143,46 @@ footer{
 
 <header>
 
-<div class="logo">💎 الوليد</div>
+<div class="logo">💎 الوليد للمجوهرات</div>
 
-<nav>
-<a href="#products">المجوهرات</a>
-<a href="#about">من نحن</a>
-<a href="#location">موقعنا</a>
-</nav>
-
-<button class="cart-btn" onclick="openCart()">
-🛒 السلة (<span id="count">0</span>)
+<button class="cart">
+🛒 السلة <span id="count">0</span>
 </button>
 
 </header>
 
-
 <section class="hero">
 
-<div>
+<h1>الوليد للمجوهرات والأحجار الكريمة</h1>
 
-<h1>الوليد للمجوهرات</h1>
-
-<p>
-الفخامة تلتقي بأصالة الأحجار الكريمة
-</p>
-
-<a class="btn" href="#products">
-تسوق الآن
-</a>
-
-</div>
+<p>الفخامة تلتقي بأصالة الأحجار الكريمة</p>
 
 </section>
-
-
-<section id="products">
-
-<h2 class="title">💎 منتجاتنا</h2>
-
-<div id="productsList" class="products">
-
-<div class="loading">
-جاري تحميل المنتجات...
-</div>
-
-</div>
-
-</section>
-
-
-<section id="about">
-
-<h2 class="title">من نحن</h2>
-
-<div class="about">
-
-<p>
-متجر الوليد للمجوهرات والأحجار الكريمة يهتم بتقديم
-قطع مميزة تجمع بين الفخامة والأصالة، مع خدمة مباشرة
-وسريعة للزبائن عبر واتساب.
-</p>
-
-<div class="info-grid">
-
-<div class="info">
-<strong>👤 الإدارة</strong>
-محمد حسنو – أبو وليد
-</div>
-
-<div class="info">
-<strong>🕗 ساعات العمل</strong>
-يوميًا من 8:00 صباحًا<br>
-حتى 8:00 مساءً
-</div>
-
-<div class="info">
-<strong>📱 التواصل</strong>
-واتساب: 963933797014
-</div>
-
-</div>
-
-</div>
-
-</section>
-
 
 <section>
 
-<h2 class="title">⭐ لماذا الوليد؟</h2>
+<h2 class="title">💎 منتجاتنا</h2>
 
-<div class="why">
+<div id="products" class="products">
 
-<div>
-<h3>💎 جودة مميزة</h3>
-<p>اختيار منتجات وأحجار بعناية.</p>
-</div>
-
-<div>
-<h3>🤝 خدمة مباشرة</h3>
-<p>تواصل سريع ومباشر عبر واتساب.</p>
-</div>
-
-<div>
-<h3>✨ فخامة وأصالة</h3>
-<p>تصميم متجر يعكس قيمة المجوهرات.</p>
+<div class="loading">
+جار تحميل المنتجات...
 </div>
 
 </div>
 
 </section>
 
+<section>
 
-<section id="location">
+<h2 class="title">من نحن</h2>
 
-<h2 class="title">📍 موقع متجر الوليد</h2>
-
-<div class="about">
-سوريا – حمص – مدينة الحولة – بلدة تلذهب
-</div>
+<p style="text-align:center;line-height:2;color:#ddd">
+متجر الوليد للمجوهرات والأحجار الكريمة يقدم
+قطعًا مميزة تجمع بين الفخامة والأصالة.
+</p>
 
 </section>
-
 
 <a class="whatsapp"
 href="https://wa.me/963933797014"
@@ -459,638 +190,135 @@ target="_blank">
 💬 واتساب
 </a>
 
-
 <footer>
 © 2026 متجر الوليد للمجوهرات والأحجار الكريمة
 </footer>
 
-
-<div class="cart-overlay" id="overlay">
-
-<div class="cart">
-
-<button class="close" onclick="closeCart()">×</button>
-
-<h2>🛒 سلة المشتريات</h2>
-
-<div id="items"></div>
-
-<div class="total">
-المجموع: <span id="total">0</span> ل.س
-</div>
-
-<button class="checkout" onclick="sendOrder()">
-📱 إرسال الطلب عبر واتساب
-</button>
-
-</div>
-
-</div>
-
-
-<script type="module">
-
-/* =========================
-   SUPABASE
-========================= */
-
-import { createClient }
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
+<script>
 
 const SUPABASE_URL =
 "https://lxalfbcvibapprsyyrwd.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
 
-
-const supabase =
-createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
-
-/* =========================
-   CART
-========================= */
-
-let cart=[];
-
-
-/* =========================
-   LOAD PRODUCTS
-========================= */
+let cartCount = 0;
 
 async function loadProducts(){
 
-const box =
-document.getElementById("productsList");
+    const container =
+    document.getElementById("products");
 
-box.innerHTML =
-'<div class="loading">جاري تحميل المنتجات...</div>';
+    try{
 
-
-const { data, error } =
-await supabase
-.from("products")
-.select("id,name,price")
-.order("id",{ascending:true});
-
-
-if(error){
-
-console.error(error);
-
-box.innerHTML =
-'<div class="error">حدث خطأ أثناء تحميل المنتجات.<br>تأكد من إعداد صلاحيات RLS في Supabase.</div>';
-
-return;
-
-}
-
-
-if(!data || data.length===0){
-
-box.innerHTML =
-'<div class="error">لا توجد منتجات حاليًا.</div>';
-
-return;
-
-}
-
-
-box.innerHTML="";
-
-
-data.forEach(product=>{
-
-const card =
-document.createElement("div");
-
-card.className="card";
-
-
-card.innerHTML=`
-
-<div class="gem">
-
-<svg viewBox="0 0 200 200">
-
-<polygon
-points="100,10 175,55 150,160 100,190 50,160 25,55"
-fill="#b28b20"
-stroke="#e5c568"
-stroke-width="5"/>
-
-<polygon
-points="100,30 150,65 135,145 100,165 65,145 50,65"
-fill="#e5c568"/>
-
-</svg>
-
-</div>
-
-<h3>${escapeHTML(product.name)}</h3>
-
-<div class="price">
-${Number(product.price).toLocaleString()} ل.س
-</div>
-
-<button class="buy-btn">
-🛒 إضافة للسلة
-</button>
-
-`;
-
-
-card
-.querySelector(".buy-btn")
-.addEventListener(
-"click",
-()=>add(
-product.name,
-Number(product.price)
-)
-);
-
-
-box.appendChild(card);
-
-});
-
-}
-
-
-/* =========================
-   SECURITY
-========================= */
-
-function escapeHTML(text){
-
-return String(text)
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
-}
-
-
-/* =========================
-   ADD TO CART
-========================= */
-
-function add(name,price){
-
-let item =
-cart.find(x=>x.name===name);
-
-
-if(item){
-
-item.qty++;
-
-}else{
-
-cart.push({
-name:name,
-price:price,
-qty:1
-});
-
-}
-
-
-update();
-
-alert("تمت إضافة المنتج إلى السلة 🛒");
-
-}
-
-
-/* =========================
-   UPDATE CART
-========================= */
-
-function update(){
-
-const box =
-document.getElementById("items");
-
-let total=0;
-let count=0;
-
-
-box.innerHTML="";
-
-
-if(cart.length===0){
-
-box.innerHTML =
-"<p style='text-align:center;color:#aaa'>السلة فارغة 🛒</p>";
-
-}else{
-
-cart.forEach((item,index)=>{
-
-const subtotal =
-item.price * item.qty;
-
-total += subtotal;
-
-count += item.qty;
-
-
-box.innerHTML += `
-
-<div class="cart-item">
-
-<h3>${escapeHTML(item.name)}</h3>
-
-<div>
-${item.price.toLocaleString()} ل.س
-</div>
-
-<div class="quantity">
-
-<button onclick="changeQty(${index},-1)">
-−
-</button>
-
-<strong>
-${item.qty}
-</strong>
-
-<button onclick="changeQty(${index},1)">
-+
-</button>
-
-<button
-class="remove"
-onclick="removeItem(${index})">
-حذف
-</button>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-document.getElementById("count")
-.textContent=count;
-
-
-document.getElementById("total")
-.textContent=total.toLocaleString();
-
-}
-
-
-/* =========================
-   QUANTITY
-========================= */
-
-window.changeQty =
-function(index,value){
-
-cart[index].qty += value;
-
-
-if(cart[index].qty<=0){
-
-cart.splice(index,1);
-
-}
-
-
-update();
-
-};
-
-
-/* =========================
-   REMOVE
-========================= */
-
-window.removeItem =
-function(index){
-
-cart.splice(index,1);
-
-update();
-
-};
-
-
-/* =========================
-   OPEN CART
-========================= */
-
-window.openCart =
-function(){
-
-document.getElementById("overlay")
-.style.display="block";
-
-update();
-
-};
-
-
-/* =========================
-   CLOSE CART
-========================= */
-
-window.closeCart =
-function(){
-
-document.getElementById("overlay")
-.style.display="none";
-
-};
-
-
-/* =========================
-   SEND WHATSAPP ORDER
-========================= */
-
-window.sendOrder =
-function(){
-
-if(cart.length===0){
-
-alert("السلة فارغة.");
-
-return;
-
-}
-
-
-let message =
-"مرحباً، أريد طلب:%0A%0A";
-
-let total=0;
-
-
-cart.forEach(item=>{
-
-const subtotal =
-item.price * item.qty;
-
-total += subtotal;
-
-
-message +=
-"💎 "+item.name+
-" — الكمية: "+item.qty+
-" — "+subtotal.toLocaleString()+
-" ل.س%0A";
-
-});
-
-
-message +=
-"%0A💰 المجموع: "+
-total.toLocaleString()+
-" ل.س";
-
-
-window.open(
-"https://wa.me/963933797014?text="+message,
-"_blank"
-);
-
-};
-
-
-/* =========================
-   START
-========================= */
-
-loadProducts();
-
-update();
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "https://lxalfbcvibapprsyyrwd.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
-
-const supabaseClient =
-supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let cart = [];
-
-async function loadProducts() {
-
-    const { data, error } =
-        await supabaseClient
+        const result =
+        await db
         .from("products")
-        .select("*")
-        .order("id", { ascending: true });
+        .select("id,name,price")
+        .order("id",{ascending:true});
 
-    if (error) {
+        if(result.error){
+            throw result.error;
+        }
+
+        const products =
+        result.data || [];
+
+        if(products.length === 0){
+
+            container.innerHTML =
+            "<div class='loading'>لا توجد منتجات حاليًا.</div>";
+
+            return;
+        }
+
+        container.innerHTML = "";
+
+        products.forEach(product => {
+
+            const card =
+            document.createElement("div");
+
+            card.className = "card";
+
+            card.innerHTML = `
+
+                <div class="gem">
+                    💎
+                </div>
+
+                <h3>
+                    ${escapeHTML(product.name)}
+                </h3>
+
+                <div class="price">
+                    ${Number(product.price).toLocaleString()}
+                    ل.س
+                </div>
+
+                <button class="buy">
+                    🛒 إضافة للسلة
+                </button>
+
+            `;
+
+            card
+            .querySelector(".buy")
+            .addEventListener("click",function(){
+
+                cartCount++;
+
+                document
+                .getElementById("count")
+                .textContent = cartCount;
+
+                alert(
+                    "تمت إضافة " +
+                    product.name +
+                    " إلى السلة 🛒"
+                );
+
+            });
+
+            container.appendChild(card);
+
+        });
+
+    }catch(error){
+
         console.error(error);
-        alert("حدث خطأ في تحميل المنتجات");
-        return;
-    }
 
-    const box = document.querySelector(".products");
-
-    box.innerHTML = "";
-
-    data.forEach(product => {
-
-        box.innerHTML += `
-        <div class="card">
-
-            <div class="gem">
-                <div style="font-size:80px">💎</div>
-            </div>
-
-            <h3>${product.name}</h3>
-
-            <div class="price">
-                ${Number(product.price).toLocaleString()} ل.س
-            </div>
-
-            <button class="buy-btn"
-                onclick="add('${product.name.replace(/'/g, "\\'")}', ${product.price})">
-                🛒 إضافة للسلة
-            </button>
-
+        container.innerHTML = `
+        <div class="loading">
+        حدث خطأ في تحميل المنتجات.<br><br>
+        تأكد من إعداد صلاحيات جدول products.
         </div>
         `;
 
-    });
-
-}
-
-function add(name, price) {
-
-    let item = cart.find(x => x.name === name);
-
-    if (item) {
-        item.qty++;
-    } else {
-        cart.push({
-            name: name,
-            price: Number(price),
-            qty: 1
-        });
     }
 
-    update();
-
-    alert("تمت إضافة المنتج إلى السلة 🛒");
 }
 
-function update() {
+function escapeHTML(text){
 
-    const box = document.getElementById("items");
+    const div =
+    document.createElement("div");
 
-    let total = 0;
-    let count = 0;
+    div.textContent =
+    text ?? "";
 
-    box.innerHTML = "";
+    return div.innerHTML;
 
-    if (cart.length === 0) {
-
-        box.innerHTML =
-        "<p style='text-align:center;color:#aaa'>السلة فارغة 🛒</p>";
-
-    } else {
-
-        cart.forEach((item, index) => {
-
-            const subtotal = item.price * item.qty;
-
-            total += subtotal;
-            count += item.qty;
-
-            box.innerHTML += `
-            <div class="cart-item">
-
-                <h3>${item.name}</h3>
-
-                <div>
-                    ${item.price.toLocaleString()} ل.س
-                </div>
-
-                <div class="quantity">
-
-                    <button onclick="change(${index}, -1)">−</button>
-
-                    <strong>${item.qty}</strong>
-
-                    <button onclick="change(${index}, 1)">+</button>
-
-                    <button class="remove"
-                        onclick="removeItem(${index})">
-                        حذف
-                    </button>
-
-                </div>
-
-            </div>
-            `;
-
-        });
-
-    }
-
-    document.getElementById("count").textContent = count;
-
-    document.getElementById("total").textContent =
-        total.toLocaleString();
 }
-
-function change(index, value) {
-
-    cart[index].qty += value;
-
-    if (cart[index].qty <= 0) {
-        cart.splice(index, 1);
-    }
-
-    update();
-}
-
-function removeItem(index) {
-
-    cart.splice(index, 1);
-
-    update();
-}
-
-function openCart() {
-
-    document.getElementById("overlay").style.display = "block";
-
-    update();
-}
-
-function closeCart() {
-
-    document.getElementById("overlay").style.display = "none";
-}
-
-function sendOrder() {
-
-    if (cart.length === 0) {
-
-        alert("السلة فارغة.");
-
-        return;
-    }
-
-    let message =
-        "مرحباً، أريد طلب:%0A%0A";
-
-    let total = 0;
-
-    cart.forEach(item => {
-
-        const subtotal =
-            item.price * item.qty;
-
-        total += subtotal;
-
-        message +=
-            "💎 " + item.name +
-            " — الكمية: " + item.qty +
-            " — " +
-            subtotal.toLocaleString() +
-            " ل.س%0A";
-    });
-
-    message +=
-        "%0A💰 المجموع: " +
-        total.toLocaleString() +
-        " ل.س";
-
-    window.open(
-        "https://wa.me/963933797014?text=" + message,
-        "_blank"
-    );
-}
-
-update();
 
 loadProducts();
+
 </script>
 
 </body>
