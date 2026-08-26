@@ -2,210 +2,231 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>لوحة تحكم الوليد</title>
+<title>إدارة متجر الوليد</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#080808;
-color:#fff;
-}
-
-header{
-padding:22px 6%;
-background:#0d0d0d;
-border-bottom:1px solid #3d3016;
-}
-
-h1{
-margin:0;
-color:#e5c568;
+color:white;
+padding:20px;
 }
 
 .container{
-padding:35px 6%;
-max-width:1100px;
+max-width:900px;
 margin:auto;
 }
 
-.panel{
+h1{
+text-align:center;
+color:#e5c568;
+}
+
+.box{
 background:#151515;
 border:1px solid #3d3016;
 border-radius:15px;
-padding:25px;
-margin-bottom:25px;
+padding:20px;
+margin-bottom:20px;
 }
 
 input{
 width:100%;
-padding:13px;
+padding:14px;
 margin:8px 0;
-background:#0b0b0b;
+border-radius:8px;
 border:1px solid #444;
-border-radius:7px;
-color:#fff;
+background:#222;
+color:white;
+font-size:16px;
 }
 
 button{
-background:#d9b653;
 border:0;
-padding:12px 20px;
-border-radius:7px;
+padding:12px 18px;
+border-radius:8px;
 font-weight:bold;
 cursor:pointer;
-margin-top:10px;
+margin:5px;
 }
 
-.product{
-border-bottom:1px solid #333;
-padding:15px 0;
+.add{
+background:#25D366;
+color:white;
+width:100%;
+}
+
+.edit{
+background:#d9b653;
+color:#111;
 }
 
 .delete{
 background:#b32626;
-color:#fff;
+color:white;
 }
 
-.success{
-color:#25D366;
-margin-top:15px;
+.product{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:15px 0;
+border-bottom:1px solid #333;
+}
+
+.price{
+color:#e5c568;
+font-weight:bold;
+}
+
+.message{
+text-align:center;
+padding:15px;
+color:#e5c568;
+}
+
+@media(max-width:600px){
+.product{
+flex-direction:column;
+align-items:stretch;
+}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>💎 لوحة تحكم متجر الوليد</h1>
-</header>
-
 <div class="container">
 
-<div class="panel">
+<h1>💎 لوحة إدارة متجر الوليد</h1>
+
+<div class="box">
 
 <h2>➕ إضافة منتج</h2>
 
-<input id="name" placeholder="اسم المنتج">
+<input
+id="name"
+type="text"
+placeholder="اسم المنتج">
 
-<input id="price" type="number" placeholder="السعر">
+<input
+id="price"
+type="number"
+placeholder="السعر">
 
-<button onclick="addProduct()">
+<button class="add" onclick="addProduct()">
 إضافة المنتج
 </button>
 
-<div id="message"></div>
-
 </div>
 
-<div class="panel">
 
-<h2>📦 المنتجات</h2>
+<div class="box">
 
-<div id="products"></div>
+<h2>💎 المنتجات</h2>
 
+<div id="products">
+<div class="message">جاري التحميل...</div>
 </div>
-
-<div class="panel">
-
-<h2>🏪 معلومات المتجر</h2>
-
-<p>👤 الإدارة: محمد حسنو – أبو وليد</p>
-
-<p>🕗 ساعات العمل: 8 صباحًا – 8 مساءً</p>
-
-<p>📱 واتساب: 963933797014</p>
-
-<p>📍 سوريا – حمص – مدينة الحولة – بلدة تلذهب</p>
 
 </div>
 
 </div>
 
-<script>
 
-let products=
-JSON.parse(localStorage.getItem("alwaleedProducts")||"[]");
+<script type="module">
 
-function save(){
+import { createClient }
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-localStorage.setItem(
-"alwaleedProducts",
-JSON.stringify(products)
+
+const SUPABASE_URL =
+"https://lxalfbcvibapprsyyrwd.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
+
+
+const supabase =
+createClient(
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
-}
 
-function addProduct(){
+/* تحميل المنتجات */
 
-let name=
-document.getElementById("name").value.trim();
+async function loadProducts(){
 
-let price=
-Number(document.getElementById("price").value);
+const box =
+document.getElementById("products");
 
-if(!name||!price){
+const {data,error} =
+await supabase
+.from("products")
+.select("id,name,price")
+.order("id",{ascending:true});
 
-alert("اكتب اسم المنتج والسعر.");
+
+if(error){
+
+console.error(error);
+
+box.innerHTML=
+'<div class="message">خطأ في تحميل المنتجات</div>';
 
 return;
 }
 
-products.push({
-name:name,
-price:price
-});
 
-save();
+if(!data.length){
 
-document.getElementById("name").value="";
-document.getElementById("price").value="";
+box.innerHTML=
+'<div class="message">لا توجد منتجات</div>';
 
-document.getElementById("message").innerHTML=
-"<div class='success'>تمت إضافة المنتج.</div>";
-
-render();
-
+return;
 }
 
-function deleteProduct(index){
-
-products.splice(index,1);
-
-save();
-
-render();
-
-}
-
-function render(){
-
-let box=document.getElementById("products");
 
 box.innerHTML="";
 
-if(products.length===0){
 
-box.innerHTML=
-"<p>لا توجد منتجات مضافة من لوحة التحكم حتى الآن.</p>";
+data.forEach(product=>{
 
-return;
-}
+const div =
+document.createElement("div");
 
-products.forEach((p,index)=>{
+div.className="product";
 
-box.innerHTML+=`
 
-<div class="product">
+div.innerHTML=`
 
-<strong>${p.name}</strong>
+<div>
 
-<p>${p.price.toLocaleString()} ل.س</p>
+<strong>${escapeHTML(product.name)}</strong>
 
-<button class="delete"
-onclick="deleteProduct(${index})">
+<br>
+
+<span class="price">
+${Number(product.price).toLocaleString()} ل.س
+</span>
+
+</div>
+
+<div>
+
+<button class="edit">
+تعديل
+</button>
+
+<button class="delete">
 حذف
 </button>
 
@@ -213,11 +234,182 @@ onclick="deleteProduct(${index})">
 
 `;
 
+
+div.querySelector(".edit")
+.onclick=()=>{
+editProduct(
+product.id,
+product.name,
+product.price
+);
+};
+
+
+div.querySelector(".delete")
+.onclick=()=>{
+deleteProduct(product.id);
+};
+
+
+box.appendChild(div);
+
 });
 
 }
 
-render();
+
+/* إضافة */
+
+window.addProduct =
+async function(){
+
+const name =
+document.getElementById("name")
+.value.trim();
+
+const price =
+Number(
+document.getElementById("price").value
+);
+
+
+if(!name || !price){
+
+alert("اكتب اسم المنتج والسعر");
+
+return;
+}
+
+
+const {error} =
+await supabase
+.from("products")
+.insert({
+name:name,
+price:price
+});
+
+
+if(error){
+
+alert("لم تتم الإضافة: "+error.message);
+
+console.error(error);
+
+return;
+}
+
+
+document.getElementById("name").value="";
+document.getElementById("price").value="";
+
+
+alert("تمت إضافة المنتج بنجاح ✅");
+
+loadProducts();
+
+};
+
+
+/* تعديل */
+
+window.editProduct =
+async function(id,oldName,oldPrice){
+
+const name =
+prompt(
+"اسم المنتج:",
+oldName
+);
+
+
+if(name===null)return;
+
+
+const price =
+prompt(
+"السعر:",
+oldPrice
+);
+
+
+if(price===null)return;
+
+
+const {error} =
+await supabase
+.from("products")
+.update({
+name:name,
+price:Number(price)
+})
+.eq("id",id);
+
+
+if(error){
+
+alert("خطأ في التعديل: "+error.message);
+
+return;
+}
+
+
+alert("تم تعديل المنتج ✅");
+
+loadProducts();
+
+};
+
+
+/* حذف */
+
+window.deleteProduct =
+async function(id){
+
+if(!confirm("هل تريد حذف هذا المنتج؟")){
+
+return;
+
+}
+
+
+const {error} =
+await supabase
+.from("products")
+.delete()
+.eq("id",id);
+
+
+if(error){
+
+alert("خطأ في الحذف: "+error.message);
+
+return;
+}
+
+
+alert("تم حذف المنتج 🗑️");
+
+loadProducts();
+
+};
+
+
+/* حماية عرض الاسم */
+
+function escapeHTML(text){
+
+return String(text)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+
+loadProducts();
 
 </script>
 
