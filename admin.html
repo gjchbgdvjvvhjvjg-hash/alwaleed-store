@@ -9,130 +9,152 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#080808;
-    color:#fff;
+margin:0;
+font-family:Arial,sans-serif;
+background:#080808;
+color:#fff;
 }
 
 header{
-    background:#0d0d0d;
-    border-bottom:1px solid #3d3016;
-    padding:20px 6%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+background:#0d0d0d;
+border-bottom:1px solid #3d3016;
+padding:18px 6%;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
 .logo{
-    color:#e5c568;
-    font-size:24px;
-    font-weight:bold;
-}
-
-.container{
-    max-width:1000px;
-    margin:auto;
-    padding:30px 20px;
-}
-
-h1,h2{
-    color:#e5c568;
-}
-
-.panel{
-    background:#151515;
-    border:1px solid #3d3016;
-    border-radius:15px;
-    padding:25px;
-    margin-bottom:25px;
-}
-
-input{
-    width:100%;
-    padding:14px;
-    margin:8px 0;
-    background:#0d0d0d;
-    border:1px solid #444;
-    border-radius:8px;
-    color:#fff;
-    font-size:16px;
+color:#e5c568;
+font-size:23px;
+font-weight:bold;
 }
 
 button{
-    border:0;
-    border-radius:8px;
-    padding:12px 18px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.add-btn{
-    width:100%;
-    background:#25D366;
-    color:#fff;
-    margin-top:10px;
-}
-
-.product{
-    background:#101010;
-    border:1px solid #333;
-    border-radius:12px;
-    padding:18px;
-    margin-top:15px;
-}
-
-.product-name{
-    color:#e5c568;
-    font-size:20px;
-    font-weight:bold;
-}
-
-.product-price{
-    margin:10px 0;
-    color:#ddd;
-}
-
-.edit{
-    background:#d9b653;
-    color:#111;
-    margin-left:8px;
-}
-
-.delete{
-    background:#b32626;
-    color:#fff;
-}
-
-.status{
-    text-align:center;
-    color:#aaa;
-    padding:15px;
+border:0;
+border-radius:8px;
+padding:12px 18px;
+font-weight:bold;
+cursor:pointer;
 }
 
 .back{
-    background:#333;
-    color:#fff;
+background:#333;
+color:white;
 }
 
-@media(max-width:600px){
-    header{
-        padding:16px;
-    }
+.container{
+max-width:900px;
+margin:auto;
+padding:25px 15px;
+}
 
-    .container{
-        padding:20px 12px;
-    }
+h1,h2{
+color:#e5c568;
+}
+
+.panel{
+background:#151515;
+border:1px solid #3d3016;
+border-radius:15px;
+padding:22px;
+margin-bottom:22px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin:7px 0;
+background:#0d0d0d;
+border:1px solid #444;
+border-radius:8px;
+color:white;
+font-size:16px;
+}
+
+.add{
+width:100%;
+background:#25D366;
+color:white;
+margin-top:8px;
+}
+
+.product{
+background:#101010;
+border:1px solid #333;
+border-radius:12px;
+padding:18px;
+margin-top:14px;
+}
+
+.name{
+color:#e5c568;
+font-size:19px;
+font-weight:bold;
+}
+
+.price{
+margin:9px 0 15px;
+color:#ddd;
+}
+
+.edit{
+background:#d9b653;
+color:#111;
+margin-left:7px;
+}
+
+.delete{
+background:#b32626;
+color:white;
+}
+
+.status{
+text-align:center;
+color:#aaa;
+padding:15px;
+}
+
+#login{
+max-width:450px;
+margin:80px auto;
+padding:25px;
+}
+
+.error{
+color:#ff7777;
+text-align:center;
+margin-top:10px;
 }
 </style>
 </head>
 
 <body>
+
+<div id="login" class="panel">
+
+<h1>💎 الوليد</h1>
+
+<h2>🔐 دخول الإدارة</h2>
+
+<input
+id="password"
+type="password"
+placeholder="أدخل كلمة المرور">
+
+<button class="add" onclick="login()">
+دخول
+</button>
+
+<div id="error" class="error"></div>
+
+</div>
+
+
+<div id="admin" style="display:none">
 
 <header>
 
@@ -164,16 +186,282 @@ id="price"
 type="number"
 placeholder="السعر بالليرة السورية">
 
-<button
-class="add-btn"
-onclick="addProduct()">
-
+<button class="add" onclick="addProduct()">
 إضافة المنتج
-
 </button>
 
 </div>
 
 <div class="panel">
 
-<h2>💎 المنتجات
+<h2>💎 المنتجات</h2>
+
+<div id="products">
+<div class="status">جار تحميل المنتجات...</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://lxalfbcvibapprsyyrwd.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
+
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* كلمة مرور الإدارة */
+
+const ADMIN_PASSWORD = "123456";
+
+
+function login(){
+
+const password =
+document.getElementById("password").value;
+
+if(password === ADMIN_PASSWORD){
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("admin").style.display="block";
+
+loadProducts();
+
+}else{
+
+document.getElementById("error").textContent =
+"كلمة المرور غير صحيحة";
+
+}
+
+}
+
+
+/* تحميل المنتجات */
+
+async function loadProducts(){
+
+const box =
+document.getElementById("products");
+
+box.innerHTML =
+'<div class="status">جار تحميل المنتجات...</div>';
+
+const {data,error} =
+await db
+.from("products")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+
+box.innerHTML =
+'<div class="status">حدث خطأ في تحميل المنتجات</div>';
+
+console.error(error);
+
+return;
+}
+
+if(!data || data.length===0){
+
+box.innerHTML =
+'<div class="status">لا توجد منتجات</div>';
+
+return;
+}
+
+box.innerHTML="";
+
+data.forEach(product=>{
+
+box.innerHTML += `
+
+<div class="product">
+
+<div class="name">
+${escapeHtml(product.name)}
+</div>
+
+<div class="price">
+${Number(product.price).toLocaleString()} ل.س
+</div>
+
+<button
+class="edit"
+onclick="editProduct('${product.id}',
+'${escapeHtml(product.name)}',
+${product.price})">
+✏️ تعديل
+</button>
+
+<button
+class="delete"
+onclick="deleteProduct('${product.id}')">
+🗑️ حذف
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* إضافة */
+
+async function addProduct(){
+
+const name =
+document.getElementById("name").value.trim();
+
+const price =
+Number(document.getElementById("price").value);
+
+if(!name || !price){
+
+alert("اكتب اسم المنتج والسعر");
+
+return;
+}
+
+const {error} =
+await db
+.from("products")
+.insert([
+{
+name:name,
+price:price
+}
+]);
+
+if(error){
+
+alert("لم تتم إضافة المنتج");
+
+console.error(error);
+
+return;
+}
+
+alert("تمت إضافة المنتج ✅");
+
+document.getElementById("name").value="";
+document.getElementById("price").value="";
+
+loadProducts();
+
+}
+
+
+/* تعديل */
+
+async function editProduct(id,oldName,oldPrice){
+
+const name =
+prompt("اسم المنتج:",oldName);
+
+if(name===null)return;
+
+const price =
+prompt("السعر:",oldPrice);
+
+if(price===null)return;
+
+const {error} =
+await db
+.from("products")
+.update({
+name:name,
+price:Number(price)
+})
+.eq("id",id);
+
+if(error){
+
+alert("لم يتم تعديل المنتج");
+
+console.error(error);
+
+return;
+}
+
+alert("تم تعديل المنتج ✅");
+
+loadProducts();
+
+}
+
+
+/* حذف */
+
+async function deleteProduct(id){
+
+if(!confirm("هل تريد حذف هذا المنتج؟")){
+
+return;
+
+}
+
+const {error} =
+await db
+.from("products")
+.delete()
+.eq("id",id);
+
+if(error){
+
+alert("لم يتم حذف المنتج");
+
+console.error(error);
+
+return;
+}
+
+alert("تم حذف المنتج ✅");
+
+loadProducts();
+
+}
+
+
+/* حماية النص */
+
+function escapeHtml(text){
+
+return String(text)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* المتجر */
+
+function goStore(){
+
+window.location.href="/";
+
+}
+
+</script>
+
+</body>
+</html>
