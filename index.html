@@ -1,3 +1,740 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>الوليد للمجوهرات</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#080808;
+color:white;
+}
+
+header{
+padding:18px 6%;
+background:#0d0d0d;
+border-bottom:1px solid #3d3016;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{
+color:#e5c568;
+font-size:24px;
+font-weight:bold;
+}
+
+.cart{
+background:#d9b653;
+color:#111;
+border:0;
+padding:11px 18px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.hero{
+text-align:center;
+padding:90px 20px;
+background:radial-gradient(circle,#4a3712,#080808 70%);
+}
+
+.hero h1{
+color:#e5c568;
+font-size:42px;
+}
+
+.hero p{
+color:#ddd;
+font-size:19px;
+}
+
+section{
+padding:55px 6%;
+}
+
+.title{
+text-align:center;
+color:#e5c568;
+margin-bottom:35px;
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:22px;
+}
+
+.card{
+background:#151515;
+border:1px solid #3d3016;
+border-radius:15px;
+padding:20px;
+text-align:center;
+}
+
+.gem{
+height:190px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0d0d0d;
+border-radius:12px;
+font-size:80px;
+}
+
+.price{
+color:#e5c568;
+font-size:21px;
+font-weight:bold;
+margin:15px;
+}
+
+.buy{
+background:#25D366;
+color:white;
+border:0;
+padding:12px 22px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.loading{
+text-align:center;
+color:#aaa;
+font-size:20px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#aaa;
+border-top:1px solid #333;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#25D366;
+color:white;
+padding:14px 20px;
+border-radius:50px;
+text-decoration:none;
+font-weight:bold;
+z-index:500;
+}
+
+/* السلة */
+
+.cart-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.8);
+z-index:2000;
+}
+
+.cart-box{
+position:absolute;
+right:0;
+top:0;
+width:100%;
+max-width:430px;
+height:100%;
+background:#111;
+padding:25px;
+overflow-y:auto;
+}
+
+.close{
+position:absolute;
+left:20px;
+top:20px;
+background:#333;
+color:white;
+border:0;
+border-radius:50%;
+width:36px;
+height:36px;
+font-size:22px;
+cursor:pointer;
+}
+
+.cart-item{
+padding:16px 0;
+border-bottom:1px solid #333;
+}
+
+.cart-item-name{
+color:#e5c568;
+font-size:18px;
+font-weight:bold;
+}
+
+.cart-item-price{
+color:#ddd;
+margin:8px 0;
+}
+
+.quantity{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:10px;
+}
+
+.quantity button{
+background:#d9b653;
+border:0;
+border-radius:5px;
+width:32px;
+height:32px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.quantity .remove{
+background:#b32626;
+color:white;
+width:auto;
+padding:5px 10px;
+}
+
+.total{
+font-size:22px;
+font-weight:bold;
+color:#e5c568;
+margin:25px 0;
+}
+
+.checkout{
+width:100%;
+padding:15px;
+background:#25D366;
+border:0;
+border-radius:8px;
+color:white;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.empty{
+text-align:center;
+color:#aaa;
+padding:30px 0;
+}
+
+@media(max-width:600px){
+
+.hero h1{
+font-size:32px;
+}
+
+header{
+padding:16px 12px;
+}
+
+.logo{
+font-size:19px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+💎 الوليد للمجوهرات
+</div>
+
+<button class="cart" onclick="openCart()">
+🛒 السلة (<span id="count">0</span>)
+</button>
+
+</header>
+
+
+<section class="hero">
+
+<h1>
+الوليد للمجوهرات والأحجار الكريمة
+</h1>
+
+<p>
+الفخامة تلتقي بأصالة الأحجار الكريمة
+</p>
+
+</section>
+
+
+<section>
+
+<h2 class="title">
+💎 منتجاتنا
+</h2>
+
+<div id="products" class="products">
+
+<div class="loading">
+جار تحميل المنتجات...
+</div>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2 class="title">
+من نحن
+</h2>
+
+<p style="text-align:center;line-height:2;color:#ddd">
+متجر الوليد للمجوهرات والأحجار الكريمة يقدم
+قطعًا مميزة تجمع بين الفخامة والأصالة.
+</p>
+
+</section>
+
+
+<a class="whatsapp"
+href="https://wa.me/963933797014"
+target="_blank">
+💬 واتساب
+</a>
+
+
+<footer>
+© 2026 متجر الوليد للمجوهرات والأحجار الكريمة
+</footer>
+
+
+<!-- السلة -->
+
+<div class="cart-overlay" id="cartOverlay">
+
+<div class="cart-box">
+
+<button class="close" onclick="closeCart()">
+×
+</button>
+
+<h2 style="color:#e5c568">
+🛒 سلة المشتريات
+</h2>
+
+<div id="cartItems">
+</div>
+
+<div class="total">
+المجموع:
+<span id="total">0</span>
+ل.س
+</div>
+
+<button class="checkout" onclick="sendOrder()">
+📱 إرسال الطلب عبر واتساب
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://lxalfbcvibapprsyyrwd.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
+
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* السلة */
+
+let cart = [];
+
+
+/* تحميل المنتجات */
+
+async function loadProducts(){
+
+const container =
+document.getElementById("products");
+
+try{
+
+const result =
+await db
+.from("products")
+.select("id,name,price")
+.order("id",{ascending:true});
+
+if(result.error){
+throw result.error;
+}
+
+const products =
+result.data || [];
+
+
+if(products.length === 0){
+
+container.innerHTML =
+"<div class='loading'>لا توجد منتجات حاليًا.</div>";
+
+return;
+
+}
+
+
+container.innerHTML = "";
+
+
+products.forEach(product => {
+
+const card =
+document.createElement("div");
+
+card.className =
+"card";
+
+
+card.innerHTML = `
+
+<div class="gem">
+💎
+</div>
+
+<h3>
+${escapeHTML(product.name)}
+</h3>
+
+<div class="price">
+${Number(product.price).toLocaleString()}
+ل.س
+</div>
+
+<button class="buy">
+🛒 إضافة للسلة
+</button>
+
+`;
+
+
+card
+.querySelector(".buy")
+.addEventListener("click",function(){
+
+addToCart(
+product.id,
+product.name,
+Number(product.price)
+);
+
+});
+
+
+container.appendChild(card);
+
+});
+
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML = `
+<div class="loading">
+حدث خطأ في تحميل المنتجات.
+</div>
+`;
+
+}
+
+}
+
+
+/* إضافة للسلة */
+
+function addToCart(id,name,price){
+
+const item =
+cart.find(x => x.id === id);
+
+
+if(item){
+
+item.qty++;
+
+}else{
+
+cart.push({
+id:id,
+name:name,
+price:price,
+qty:1
+});
+
+}
+
+
+updateCart();
+
+alert(
+"تمت إضافة " +
+name +
+" إلى السلة 🛒"
+);
+
+}
+
+
+/* تحديث السلة */
+
+function updateCart(){
+
+const box =
+document.getElementById("cartItems");
+
+let total = 0;
+let count = 0;
+
+
+if(cart.length === 0){
+
+box.innerHTML =
+"<div class='empty'>السلة فارغة 🛒</div>";
+
+}else{
+
+box.innerHTML = "";
+
+
+cart.forEach((item,index)=>{
+
+const subtotal =
+item.price * item.qty;
+
+total += subtotal;
+count += item.qty;
+
+
+box.innerHTML += `
+
+<div class="cart-item">
+
+<div class="cart-item-name">
+${escapeHTML(item.name)}
+</div>
+
+<div class="cart-item-price">
+${item.price.toLocaleString()} ل.س
+</div>
+
+<div class="quantity">
+
+<button onclick="changeQuantity(${index},-1)">
+−
+</button>
+
+<strong>
+${item.qty}
+</strong>
+
+<button onclick="changeQuantity(${index},1)">
++
+</button>
+
+<button
+class="remove"
+onclick="removeItem(${index})">
+حذف
+</button>
+
+</div>
+
+<div style="margin-top:10px;color:#ddd">
+الإجمالي:
+${subtotal.toLocaleString()}
+ل.س
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+document.getElementById("count").textContent =
+count;
+
+document.getElementById("total").textContent =
+total.toLocaleString();
+
+}
+
+
+/* تغيير الكمية */
+
+function changeQuantity(index,value){
+
+cart[index].qty += value;
+
+
+if(cart[index].qty <= 0){
+
+cart.splice(index,1);
+
+}
+
+
+updateCart();
+
+}
+
+
+/* حذف */
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+updateCart();
+
+}
+
+
+/* فتح السلة */
+
+function openCart(){
+
+document.getElementById("cartOverlay")
+.style.display = "block";
+
+updateCart();
+
+}
+
+
+/* إغلاق السلة */
+
+function closeCart(){
+
+document.getElementById("cartOverlay")
+.style.display = "none";
+
+}
+
+
+/* إرسال الطلب */
+
+function sendOrder(){
+
+if(cart.length === 0){
+
+alert("السلة فارغة 🛒");
+
+return;
+
+}
+
+
+let message =
+"مرحباً، أريد طلب:%0A%0A";
+
+let total = 0;
+
+
+cart.forEach(item=>{
+
+const subtotal =
+item.price * item.qty;
+
+total += subtotal;
+
+
+message +=
+"💎 " +
+item.name +
+" — الكمية: " +
+item.qty +
+" — " +
+subtotal.toLocaleString() +
+" ل.س%0A";
+
+});
+
+
+message +=
+"%0A💰 المجموع: " +
+total.toLocaleString() +
+" ل.س";
+
+
+window.open(
+"https://wa.me/963933797014?text=" +
+message,
+"_blank"
+);
+
+}
+
+
+/* حماية النص */
+
+function escapeHTML(text){
+
+const div =
+document.createElement("div");
+
+div.textContent =
+text ?? "";
+
+return div.innerHTML;
+
+}
+
+
+/* تشغيل */
+
+loadProducts();
+
+updateCart();
+
+</script>
+
+</body>
+</html>
 <section>
 
 <h2 class="title">📋 معلومات متجر الوليد</h2>
