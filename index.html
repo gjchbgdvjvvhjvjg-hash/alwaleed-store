@@ -4,256 +4,289 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>الوليد للمجوهرات</title>
+<title>الوليد للمجوهرات والأحجار الكريمة</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#080808;
-color:white;
+  margin:0;
+  font-family:Arial,Tahoma,sans-serif;
+  background:#080808;
+  color:#fff;
 }
 
 header{
-padding:18px 6%;
-background:#0d0d0d;
-border-bottom:1px solid #3d3016;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-top:0;
-z-index:100;
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 6%;
+  background:#0d0d0d;
+  border-bottom:1px solid #3d3016;
 }
 
 .logo{
-color:#e5c568;
-font-size:24px;
-font-weight:bold;
+  color:#e5c568;
+  font-size:24px;
+  font-weight:bold;
 }
 
-.cart{
-background:#d9b653;
-color:#111;
-border:0;
-padding:11px 18px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
+.cart-btn{
+  background:#d9b653;
+  color:#111;
+  border:0;
+  padding:11px 18px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .hero{
-text-align:center;
-padding:90px 20px;
-background:radial-gradient(circle,#4a3712,#080808 70%);
+  text-align:center;
+  padding:90px 20px;
+  background:radial-gradient(circle,#4a3712,#080808 70%);
 }
 
 .hero h1{
-color:#e5c568;
-font-size:42px;
+  margin:0 0 15px;
+  color:#e5c568;
+  font-size:42px;
 }
 
 .hero p{
-color:#ddd;
-font-size:19px;
+  color:#ddd;
+  font-size:19px;
 }
 
 section{
-padding:55px 6%;
+  padding:55px 6%;
 }
 
 .title{
-text-align:center;
-color:#e5c568;
-margin-bottom:35px;
+  text-align:center;
+  color:#e5c568;
+  margin-bottom:35px;
 }
 
 .products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:22px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:22px;
 }
 
 .card{
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:20px;
-text-align:center;
+  background:#151515;
+  border:1px solid #3d3016;
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
 }
 
 .gem{
-height:190px;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#0d0d0d;
-border-radius:12px;
-font-size:80px;
+  height:190px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0d0d0d;
+  border-radius:12px;
+  font-size:80px;
+}
+
+.card h3{
+  color:#fff;
+  margin:18px 0 8px;
 }
 
 .price{
-color:#e5c568;
-font-size:21px;
-font-weight:bold;
-margin:15px;
+  color:#e5c568;
+  font-size:21px;
+  font-weight:bold;
+  margin:15px;
 }
 
 .buy{
-background:#25D366;
-color:white;
-border:0;
-padding:12px 22px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
+  background:#25D366;
+  color:#fff;
+  border:0;
+  padding:12px 22px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.loading{
-text-align:center;
-color:#aaa;
-font-size:20px;
+.info{
+  max-width:900px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
 }
 
-footer{
-text-align:center;
-padding:30px;
-color:#aaa;
-border-top:1px solid #333;
+.info-card{
+  background:#151515;
+  border:1px solid #3d3016;
+  border-radius:15px;
+  padding:25px;
+  text-align:center;
+}
+
+.info-card h3{
+  color:#e5c568;
 }
 
 .whatsapp{
-position:fixed;
-bottom:20px;
-left:20px;
-background:#25D366;
-color:white;
-padding:14px 20px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-z-index:500;
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  z-index:500;
+  background:#25D366;
+  color:#fff;
+  padding:14px 20px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:bold;
 }
+
+footer{
+  text-align:center;
+  padding:30px;
+  color:#aaa;
+  border-top:1px solid #333;
+}
+
 
 /* السلة */
 
-.cart-overlay{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.8);
-z-index:2000;
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  z-index:2000;
 }
 
 .cart-box{
-position:absolute;
-right:0;
-top:0;
-width:100%;
-max-width:430px;
-height:100%;
-background:#111;
-padding:25px;
-overflow-y:auto;
+  position:absolute;
+  right:0;
+  top:0;
+  width:100%;
+  max-width:430px;
+  height:100%;
+  background:#111;
+  padding:25px;
+  overflow-y:auto;
 }
 
 .close{
-position:absolute;
-left:20px;
-top:20px;
-background:#333;
-color:white;
-border:0;
-border-radius:50%;
-width:36px;
-height:36px;
-font-size:22px;
-cursor:pointer;
+  position:absolute;
+  left:20px;
+  top:20px;
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:50%;
+  background:#333;
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.cart-title{
+  color:#e5c568;
+  margin-top:10px;
 }
 
 .cart-item{
-padding:16px 0;
-border-bottom:1px solid #333;
+  padding:16px 0;
+  border-bottom:1px solid #333;
 }
 
-.cart-item-name{
-color:#e5c568;
-font-size:18px;
-font-weight:bold;
+.cart-name{
+  color:#e5c568;
+  font-size:18px;
+  font-weight:bold;
 }
 
-.cart-item-price{
-color:#ddd;
-margin:8px 0;
+.cart-price{
+  color:#ddd;
+  margin:8px 0;
 }
 
 .quantity{
-display:flex;
-align-items:center;
-gap:8px;
-margin-top:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
 }
 
 .quantity button{
-background:#d9b653;
-border:0;
-border-radius:5px;
-width:32px;
-height:32px;
-font-weight:bold;
-cursor:pointer;
+  background:#d9b653;
+  color:#111;
+  border:0;
+  border-radius:5px;
+  width:32px;
+  height:32px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .quantity .remove{
-background:#b32626;
-color:white;
-width:auto;
-padding:5px 10px;
+  width:auto;
+  padding:5px 10px;
+  background:#b32626;
+  color:#fff;
 }
 
 .total{
-font-size:22px;
-font-weight:bold;
-color:#e5c568;
-margin:25px 0;
+  margin:25px 0;
+  color:#e5c568;
+  font-size:22px;
+  font-weight:bold;
 }
 
 .checkout{
-width:100%;
-padding:15px;
-background:#25D366;
-border:0;
-border-radius:8px;
-color:white;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
+  width:100%;
+  padding:15px;
+  background:#25D366;
+  border:0;
+  border-radius:8px;
+  color:#fff;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .empty{
-text-align:center;
-color:#aaa;
-padding:30px 0;
+  text-align:center;
+  color:#aaa;
+  padding:30px;
 }
 
 @media(max-width:600px){
 
-.hero h1{
-font-size:32px;
-}
+  .hero h1{
+    font-size:32px;
+  }
 
-header{
-padding:16px 12px;
-}
+  .logo{
+    font-size:19px;
+  }
 
-.logo{
-font-size:19px;
-}
-
+  header{
+    padding:15px 12px;
+  }
 }
 </style>
 </head>
@@ -266,7 +299,7 @@ font-size:19px;
 💎 الوليد للمجوهرات
 </div>
 
-<button class="cart" onclick="openCart()">
+<button class="cart-btn" onclick="openCart()">
 🛒 السلة (<span id="count">0</span>)
 </button>
 
@@ -293,11 +326,6 @@ font-size:19px;
 </h2>
 
 <div id="products" class="products">
-
-<div class="loading">
-جار تحميل المنتجات...
-</div>
-
 </div>
 
 </section>
@@ -317,7 +345,46 @@ font-size:19px;
 </section>
 
 
-<a class="whatsapp"
+<section>
+
+<h2 class="title">
+📋 معلومات متجر الوليد
+</h2>
+
+<div class="info">
+
+<div class="info-card">
+<h3>👤 الإدارة</h3>
+<p>محمد حسنو – أبو وليد</p>
+</div>
+
+<div class="info-card">
+<h3>🕗 ساعات العمل</h3>
+<p>
+يوميًا من 8:00 صباحًا<br>
+حتى 8:00 مساءً
+</p>
+</div>
+
+<div class="info-card">
+<h3>📱 التواصل</h3>
+<p>واتساب: 963933797014</p>
+</div>
+
+<div class="info-card">
+<h3>📍 الموقع</h3>
+<p>
+سوريا – حمص – مدينة الحولة – بلدة تلذهب
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<a
+class="whatsapp"
 href="https://wa.me/963933797014"
 target="_blank">
 💬 واتساب
@@ -331,7 +398,7 @@ target="_blank">
 
 <!-- السلة -->
 
-<div class="cart-overlay" id="cartOverlay">
+<div class="overlay" id="cartOverlay">
 
 <div class="cart-box">
 
@@ -339,12 +406,11 @@ target="_blank">
 ×
 </button>
 
-<h2 style="color:#e5c568">
+<h2 class="cart-title">
 🛒 سلة المشتريات
 </h2>
 
-<div id="cartItems">
-</div>
+<div id="cartItems"></div>
 
 <div class="total">
 المجموع:
@@ -363,6 +429,10 @@ target="_blank">
 
 <script>
 
+/* ==========================
+   SUPABASE
+========================== */
+
 const SUPABASE_URL =
 "https://lxalfbcvibapprsyyrwd.supabase.co";
 
@@ -371,48 +441,60 @@ const SUPABASE_KEY =
 
 const db =
 supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
 
-/* السلة */
+/* ==========================
+   منتجات احتياطية
+   تظهر إذا تعذر الاتصال
+========================== */
+
+const fallbackProducts = [
+
+{
+  id:"local-1",
+  name:"خاتم زمرد فاخر",
+  price:15000
+},
+
+{
+  id:"local-2",
+  name:"حجر عقيق فاخر",
+  price:20000
+},
+
+{
+  id:"local-3",
+  name:"خاتم ياقوت",
+  price:30000
+},
+
+{
+  id:"local-4",
+  name:"حجر فيروز طبيعي",
+  price:18000
+}
+
+];
+
+
+/* ==========================
+   السلة
+========================== */
 
 let cart = [];
 
 
-/* تحميل المنتجات */
+/* ==========================
+   عرض المنتجات
+========================== */
 
-async function loadProducts(){
+function displayProducts(products){
 
 const container =
 document.getElementById("products");
-
-try{
-
-const result =
-await db
-.from("products")
-.select("id,name,price")
-.order("id",{ascending:true});
-
-if(result.error){
-throw result.error;
-}
-
-const products =
-result.data || [];
-
-
-if(products.length === 0){
-
-container.innerHTML =
-"<div class='loading'>لا توجد منتجات حاليًا.</div>";
-
-return;
-
-}
-
 
 container.innerHTML = "";
 
@@ -422,8 +504,14 @@ products.forEach(product => {
 const card =
 document.createElement("div");
 
-card.className =
-"card";
+card.className = "card";
+
+
+const name =
+String(product.name || "منتج");
+
+const price =
+Number(product.price || 0);
 
 
 card.innerHTML = `
@@ -432,12 +520,10 @@ card.innerHTML = `
 💎
 </div>
 
-<h3>
-${escapeHTML(product.name)}
-</h3>
+<h3>${escapeHTML(name)}</h3>
 
 <div class="price">
-${Number(product.price).toLocaleString()}
+${price.toLocaleString()}
 ل.س
 </div>
 
@@ -454,8 +540,8 @@ card
 
 addToCart(
 product.id,
-product.name,
-Number(product.price)
+name,
+price
 );
 
 });
@@ -465,33 +551,95 @@ container.appendChild(card);
 
 });
 
+}
+
+
+/* ==========================
+   تحميل المنتجات
+========================== */
+
+async function loadProducts(){
+
+const container =
+document.getElementById("products");
+
+
+try{
+
+const response =
+await db
+.from("products")
+.select("id,name,price")
+.order("id",{ascending:true});
+
+
+if(
+response.error ||
+!Array.isArray(response.data)
+){
+
+console.warn(
+"تعذر تحميل المنتجات من Supabase، سيتم استخدام المنتجات الاحتياطية."
+);
+
+displayProducts(
+fallbackProducts
+);
+
+return;
+
+}
+
+
+if(response.data.length === 0){
+
+displayProducts(
+fallbackProducts
+);
+
+return;
+
+}
+
+
+/* المنتجات من Supabase */
+
+displayProducts(
+response.data
+);
 
 }catch(error){
 
-console.error(error);
+console.warn(
+"Supabase unavailable:",
+error
+);
 
-container.innerHTML = `
-<div class="loading">
-حدث خطأ في تحميل المنتجات.
-</div>
-`;
+
+/* لا نعرض رسالة خطأ للزبون */
+
+displayProducts(
+fallbackProducts
+);
 
 }
 
 }
 
 
-/* إضافة للسلة */
+/* ==========================
+   إضافة للسلة
+========================== */
 
 function addToCart(id,name,price){
 
-const item =
-cart.find(x => x.id === id);
+const existing =
+cart.find(item => item.id === id);
 
 
-if(item){
+if(existing){
 
-item.qty++;
+existing.qty++;
 
 }else{
 
@@ -516,7 +664,9 @@ name +
 }
 
 
-/* تحديث السلة */
+/* ==========================
+   تحديث السلة
+========================== */
 
 function updateCart(){
 
@@ -546,21 +696,27 @@ total += subtotal;
 count += item.qty;
 
 
-box.innerHTML += `
+const div =
+document.createElement("div");
 
-<div class="cart-item">
+div.className =
+"cart-item";
 
-<div class="cart-item-name">
+
+div.innerHTML = `
+
+<div class="cart-name">
 ${escapeHTML(item.name)}
 </div>
 
-<div class="cart-item-price">
+<div class="cart-price">
 ${item.price.toLocaleString()} ل.س
 </div>
 
 <div class="quantity">
 
-<button onclick="changeQuantity(${index},-1)">
+<button
+onclick="changeQuantity(${index},-1)">
 −
 </button>
 
@@ -568,7 +724,8 @@ ${item.price.toLocaleString()} ل.س
 ${item.qty}
 </strong>
 
-<button onclick="changeQuantity(${index},1)">
+<button
+onclick="changeQuantity(${index},1)">
 +
 </button>
 
@@ -586,9 +743,10 @@ ${subtotal.toLocaleString()}
 ل.س
 </div>
 
-</div>
-
 `;
+
+
+box.appendChild(div);
 
 });
 
@@ -604,9 +762,15 @@ total.toLocaleString();
 }
 
 
-/* تغيير الكمية */
+/* ==========================
+   تغيير الكمية
+========================== */
 
 function changeQuantity(index,value){
+
+if(!cart[index]){
+  return;
+}
 
 cart[index].qty += value;
 
@@ -623,9 +787,15 @@ updateCart();
 }
 
 
-/* حذف */
+/* ==========================
+   حذف منتج
+========================== */
 
 function removeItem(index){
+
+if(!cart[index]){
+  return;
+}
 
 cart.splice(index,1);
 
@@ -634,11 +804,14 @@ updateCart();
 }
 
 
-/* فتح السلة */
+/* ==========================
+   فتح السلة
+========================== */
 
 function openCart(){
 
-document.getElementById("cartOverlay")
+document
+.getElementById("cartOverlay")
 .style.display = "block";
 
 updateCart();
@@ -646,23 +819,30 @@ updateCart();
 }
 
 
-/* إغلاق السلة */
+/* ==========================
+   إغلاق السلة
+========================== */
 
 function closeCart(){
 
-document.getElementById("cartOverlay")
+document
+.getElementById("cartOverlay")
 .style.display = "none";
 
 }
 
 
-/* إرسال الطلب */
+/* ==========================
+   إرسال الطلب
+========================== */
 
 function sendOrder(){
 
 if(cart.length === 0){
 
-alert("السلة فارغة 🛒");
+alert(
+"السلة فارغة 🛒"
+);
 
 return;
 
@@ -675,7 +855,7 @@ let message =
 let total = 0;
 
 
-cart.forEach(item=>{
+cart.forEach(item => {
 
 const subtotal =
 item.price * item.qty;
@@ -710,7 +890,9 @@ message,
 }
 
 
-/* حماية النص */
+/* ==========================
+   حماية النص
+========================== */
 
 function escapeHTML(text){
 
@@ -725,7 +907,9 @@ return div.innerHTML;
 }
 
 
-/* تشغيل */
+/* ==========================
+   تشغيل المتجر
+========================== */
 
 loadProducts();
 
@@ -735,95 +919,3 @@ updateCart();
 
 </body>
 </html>
-<section>
-
-<h2 class="title">📋 معلومات متجر الوليد</h2>
-
-<div style="
-max-width:900px;
-margin:auto;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-">
-
-<div style="
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:25px;
-text-align:center;
-">
-
-<h3 style="color:#e5c568">
-👤 الإدارة
-</h3>
-
-<p>
-محمد حسنو – أبو وليد
-</p>
-
-</div>
-
-
-<div style="
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:25px;
-text-align:center;
-">
-
-<h3 style="color:#e5c568">
-🕗 ساعات العمل
-</h3>
-
-<p>
-يوميًا من 8:00 صباحًا
-<br>
-حتى 8:00 مساءً
-</p>
-
-</div>
-
-
-<div style="
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:25px;
-text-align:center;
-">
-
-<h3 style="color:#e5c568">
-📱 التواصل
-</h3>
-
-<p>
-واتساب: 963933797014
-</p>
-
-</div>
-
-
-<div style="
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:25px;
-text-align:center;
-">
-
-<h3 style="color:#e5c568">
-📍 الموقع
-</h3>
-
-<p>
-سوريا – حمص – مدينة الحولة – بلدة تلذهب
-</p>
-
-</div>
-
-</div>
-
-</section>
