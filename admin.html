@@ -9,250 +9,205 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#080808;
-color:#fff;
-}
-
-header{
-background:#0d0d0d;
-border-bottom:1px solid #3d3016;
-padding:18px 6%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo{
-color:#e5c568;
-font-size:23px;
-font-weight:bold;
-}
-
-button{
-border:0;
-border-radius:8px;
-padding:12px 18px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.back{
-background:#333;
-color:white;
+    margin:0;
+    font-family:Arial,Tahoma,sans-serif;
+    background:#111;
+    color:#fff;
 }
 
 .container{
-max-width:900px;
-margin:auto;
-padding:25px 15px;
+    width:95%;
+    max-width:900px;
+    margin:30px auto;
 }
 
-h1,h2{
-color:#e5c568;
+h1{
+    text-align:center;
+    color:#d4af37;
+    margin-bottom:25px;
 }
 
-.panel{
-background:#151515;
-border:1px solid #3d3016;
-border-radius:15px;
-padding:22px;
-margin-bottom:22px;
+.card{
+    background:#1b1b1b;
+    border:1px solid #333;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
 }
 
 input{
-width:100%;
-padding:14px;
-margin:7px 0;
-background:#0d0d0d;
-border:1px solid #444;
-border-radius:8px;
-color:white;
-font-size:16px;
+    width:100%;
+    padding:13px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #444;
+    background:#222;
+    color:#fff;
+    font-size:16px;
 }
 
-.add{
-width:100%;
-background:#25D366;
-color:white;
-margin-top:8px;
+button{
+    border:0;
+    border-radius:8px;
+    padding:11px 18px;
+    cursor:pointer;
+    font-size:15px;
+    margin:5px;
+}
+
+.login-btn,
+.add-btn{
+    background:#d4af37;
+    color:#111;
+    font-weight:bold;
+}
+
+.edit-btn{
+    background:#3498db;
+    color:#fff;
+}
+
+.delete-btn{
+    background:#c0392b;
+    color:#fff;
+}
+
+.logout-btn{
+    background:#555;
+    color:#fff;
 }
 
 .product{
-background:#101010;
-border:1px solid #333;
-border-radius:12px;
-padding:18px;
-margin-top:14px;
+    background:#222;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:15px;
+    margin:12px 0;
 }
 
-.name{
-color:#e5c568;
-font-size:19px;
-font-weight:bold;
+.product h3{
+    margin-top:0;
+    color:#d4af37;
 }
 
 .price{
-margin:9px 0 15px;
-color:#ddd;
-}
-
-.edit{
-background:#d9b653;
-color:#111;
-margin-left:7px;
-}
-
-.delete{
-background:#b32626;
-color:white;
+    color:#fff;
+    font-weight:bold;
 }
 
 .status{
-text-align:center;
-color:#aaa;
-padding:15px;
-line-height:1.8;
+    text-align:center;
+    padding:20px;
+    border-radius:10px;
+    background:#222;
+    margin-top:15px;
+    line-height:1.8;
 }
 
 .error{
-color:#ff7777;
-text-align:center;
-margin-top:10px;
-line-height:1.7;
+    border:1px solid #c0392b;
+    color:#ff7675;
 }
 
 .success{
-color:#5cff91;
-text-align:center;
-padding:10px;
+    border:1px solid #27ae60;
+    color:#2ecc71;
 }
 
-.small{
-font-size:13px;
-color:#aaa;
-word-break:break-word;
+.hidden{
+    display:none;
 }
 
-#login{
-max-width:450px;
-margin:80px auto;
-padding:25px;
-}
-
-.loading{
-opacity:.7;
-pointer-events:none;
+.actions{
+    margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- تسجيل الدخول -->
-
-<div id="login" class="panel">
-
-<h1>💎 الوليد</h1>
-
-<h2>🔐 دخول الإدارة</h2>
-
-<input
-id="password"
-type="password"
-placeholder="أدخل كلمة المرور"
-autocomplete="current-password"
->
-
-<button class="add" onclick="login()">
-دخول
-</button>
-
-<div id="error" class="error"></div>
-
-</div>
-
-
-<!-- لوحة الإدارة -->
-
-<div id="admin" style="display:none">
-
-<header>
-
-<div class="logo">
-💎 الوليد - الإدارة
-</div>
-
-<button class="back" onclick="goStore()">
-🏪 المتجر
-</button>
-
-</header>
-
 <div class="container">
 
-<h1>لوحة إدارة المنتجات</h1>
+<h1>💎 لوحة إدارة متجر الوليد</h1>
 
+<!-- تسجيل الدخول -->
+<div id="loginBox" class="card">
 
-<!-- إضافة منتج -->
+    <h2>تسجيل دخول الإدارة</h2>
 
-<div class="panel">
+    <input
+        id="password"
+        type="password"
+        placeholder="أدخل كلمة مرور الإدارة"
+    >
 
-<h2>➕ إضافة منتج</h2>
+    <button class="login-btn" onclick="login()">
+        دخول
+    </button>
 
-<input
-id="name"
-type="text"
-placeholder="اسم المنتج"
->
-
-<input
-id="price"
-type="number"
-min="0"
-step="1"
-placeholder="السعر بالليرة السورية"
->
-
-<button
-id="addButton"
-class="add"
-onclick="addProduct()"
->
-إضافة المنتج
-</button>
-
-<div id="addStatus"></div>
+    <div id="loginStatus"></div>
 
 </div>
 
 
-<!-- المنتجات -->
+<!-- لوحة التحكم -->
+<div id="adminPanel" class="hidden">
 
-<div class="panel">
+    <div class="card">
 
-<h2>💎 المنتجات</h2>
+        <button class="logout-btn" onclick="logout()">
+            تسجيل الخروج
+        </button>
 
-<div id="products">
-<div class="status">
-جار تحميل المنتجات...
+        <h2>إضافة منتج</h2>
+
+        <input
+            id="name"
+            type="text"
+            placeholder="اسم المنتج"
+        >
+
+        <input
+            id="price"
+            type="number"
+            placeholder="السعر"
+        >
+
+        <button class="add-btn" onclick="addProduct()">
+            ➕ إضافة المنتج
+        </button>
+
+        <div id="actionStatus"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>📦 المنتجات</h2>
+
+        <div id="products">
+            <div class="status">
+                جار تحميل المنتجات...
+            </div>
+        </div>
+
+    </div>
+
 </div>
-</div>
 
-</div>
-
-</div>
 </div>
 
 
 <script>
 
 /* =========================
-   إعدادات Supabase
+   SUPABASE
 ========================= */
 
 const SUPABASE_URL =
@@ -261,9 +216,10 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
 
-const db = supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+const db =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
 
 
@@ -275,48 +231,76 @@ const ADMIN_PASSWORD = "0967300235Aa";
 
 
 /* =========================
+   حماية النصوص
+========================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
    تسجيل الدخول
 ========================= */
 
 function login(){
 
-const password =
-document.getElementById("password").value;
+    const password =
+        document.getElementById("password").value;
 
-const error =
-document.getElementById("error");
+    const status =
+        document.getElementById("loginStatus");
 
-if(password === ADMIN_PASSWORD){
 
-error.textContent = "";
+    if(password === ADMIN_PASSWORD){
 
-document.getElementById("login").style.display = "none";
+        sessionStorage.setItem(
+            "alwaleed_admin",
+            "true"
+        );
 
-document.getElementById("admin").style.display = "block";
+        document
+            .getElementById("loginBox")
+            .classList.add("hidden");
 
-loadProducts();
+        document
+            .getElementById("adminPanel")
+            .classList.remove("hidden");
 
-}else{
+        status.innerHTML = "";
 
-error.textContent =
-"❌ كلمة المرور غير صحيحة";
+        loadProducts();
+
+    }else{
+
+        status.innerHTML =
+        '<div class="status error">❌ كلمة المرور غير صحيحة</div>';
+
+    }
 
 }
 
+
+/* =========================
+   تسجيل الخروج
+========================= */
+
+function logout(){
+
+    sessionStorage.removeItem(
+        "alwaleed_admin"
+    );
+
+    location.reload();
+
 }
-
-
-/* السماح بالضغط على Enter */
-
-document
-.getElementById("password")
-.addEventListener("keydown", function(e){
-
-if(e.key === "Enter"){
-login();
-}
-
-});
 
 
 /* =========================
@@ -325,140 +309,143 @@ login();
 
 async function loadProducts(){
 
-const box =
-document.getElementById("products");
+    const box =
+        document.getElementById("products");
 
-box.innerHTML =
-'<div class="status">⏳ جار تحميل المنتجات...</div>';
-
-try{
-
-const { data, error } = await db
-.from("products")
-.select("*")
-.order("created_at", {
-ascending:false
-});
-
-if(error){
-
-console.error("Supabase error:", error);
-
-box.innerHTML = `
-<div class="status error">
-❌ حدث خطأ في تحميل المنتجات
-<br><br>
-<div class="small">
-${escapeHtml(error.message)}
-</div>
-<br>
-<div class="small">
-الكود: ${escapeHtml(error.code || "غير متوفر")}
-</div>
-</div>
-`;
-
-return;
-}
+    box.innerHTML =
+        '<div class="status">⏳ جار تحميل المنتجات...</div>';
 
 
-if(!data || data.length === 0){
+    try{
 
-box.innerHTML =
-'<div class="status">📦 لا توجد منتجات حاليًا</div>';
-
-return;
-}
-
-
-box.innerHTML = "";
-
-data.forEach(product => {
-
-const item =
-document.createElement("div");
-
-item.className = "product";
+        const { data, error } =
+            await db
+                .from("products")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                );
 
 
-const name =
-document.createElement("div");
+        /* =========================
+           إظهار الخطأ الحقيقي
+        ========================= */
 
-name.className = "name";
+        if(error){
 
-name.textContent =
-product.name || "بدون اسم";
+            console.error(
+                "Supabase error:",
+                error
+            );
 
+            box.innerHTML = `
+                <div class="status error">
+                    ❌ خطأ في تحميل المنتجات
+                    <br><br>
 
-const price =
-document.createElement("div");
+                    <strong>الرسالة:</strong>
+                    ${escapeHtml(error.message)}
 
-price.className = "price";
+                    <br>
 
-price.textContent =
-Number(product.price || 0).toLocaleString("ar-SY")
-+ " ل.س";
+                    <strong>الكود:</strong>
+                    ${escapeHtml(error.code || "غير معروف")}
 
+                    <br>
 
-const edit =
-document.createElement("button");
+                    <strong>التفاصيل:</strong>
+                    ${escapeHtml(error.details || "لا توجد تفاصيل")}
 
-edit.className = "edit";
+                    <br>
 
-edit.textContent = "✏️ تعديل";
+                    <strong>الحل:</strong>
+                    تحقق من صلاحيات جدول products في Supabase.
+                </div>
+            `;
 
-edit.onclick = function(){
-
-editProduct(
-product.id,
-product.name || "",
-product.price || 0
-);
-
-};
-
-
-const del =
-document.createElement("button");
-
-del.className = "delete";
-
-del.textContent = "🗑️ حذف";
-
-del.onclick = function(){
-
-deleteProduct(product.id);
-
-};
+            return;
+        }
 
 
-item.appendChild(name);
+        if(!data || data.length === 0){
 
-item.appendChild(price);
+            box.innerHTML =
+                '<div class="status">📦 لا توجد منتجات حالياً</div>';
 
-item.appendChild(edit);
+            return;
 
-item.appendChild(del);
+        }
 
-box.appendChild(item);
 
-});
+        box.innerHTML = "";
 
-}catch(err){
 
-console.error(err);
+        data.forEach(product => {
 
-box.innerHTML = `
-<div class="status error">
-❌ تعذر الاتصال بقاعدة البيانات
-<br><br>
-<div class="small">
-${escapeHtml(err.message || String(err))}
-</div>
-</div>
-`;
+            const div =
+                document.createElement("div");
 
-}
+            div.className = "product";
+
+
+            div.innerHTML = `
+
+                <h3>
+                    ${escapeHtml(product.name)}
+                </h3>
+
+                <div class="price">
+                    السعر:
+                    ${escapeHtml(product.price)}
+                    ل.س
+                </div>
+
+                <div class="actions">
+
+                    <button
+                        class="edit-btn"
+                        onclick="editProduct(
+                            ${Number(product.id)},
+                            '${escapeHtml(product.name).replace(/'/g,"\\'")}',
+                            '${Number(product.price || 0)}'
+                        )"
+                    >
+                        ✏️ تعديل
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteProduct(
+                            ${Number(product.id)}
+                        )"
+                    >
+                        🗑️ حذف
+                    </button>
+
+                </div>
+            `;
+
+
+            box.appendChild(div);
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+        box.innerHTML = `
+            <div class="status error">
+                ❌ حدث خطأ غير متوقع
+                <br><br>
+                ${escapeHtml(err.message)}
+            </div>
+        `;
+
+    }
 
 }
 
@@ -469,111 +456,83 @@ ${escapeHtml(err.message || String(err))}
 
 async function addProduct(){
 
-const nameInput =
-document.getElementById("name");
+    const name =
+        document.getElementById("name").value.trim();
 
-const priceInput =
-document.getElementById("price");
-
-const status =
-document.getElementById("addStatus");
-
-const button =
-document.getElementById("addButton");
-
-const name =
-nameInput.value.trim();
-
-const price =
-Number(priceInput.value);
+    const price =
+        document.getElementById("price").value;
 
 
-if(!name){
-
-status.innerHTML =
-'<div class="error">اكتب اسم المنتج</div>';
-
-return;
-}
+    const status =
+        document.getElementById("actionStatus");
 
 
-if(!Number.isFinite(price) || price <= 0){
+    if(!name){
 
-status.innerHTML =
-'<div class="error">اكتب سعرًا صحيحًا</div>';
+        status.innerHTML =
+            '<div class="status error">اكتب اسم المنتج</div>';
 
-return;
-}
+        return;
 
-
-button.disabled = true;
-
-button.textContent =
-"⏳ جار الإضافة...";
-
-status.innerHTML = "";
+    }
 
 
-try{
+    if(!price){
 
-const { error } = await db
-.from("products")
-.insert({
-name:name,
-price:price
-});
+        status.innerHTML =
+            '<div class="status error">اكتب السعر</div>';
 
+        return;
 
-if(error){
-
-console.error("Insert error:", error);
-
-status.innerHTML = `
-<div class="error">
-❌ لم تتم إضافة المنتج
-<br>
-<span class="small">
-${escapeHtml(error.message)}
-</span>
-</div>
-`;
-
-return;
-}
+    }
 
 
-status.innerHTML =
-'<div class="success">✅ تمت إضافة المنتج</div>';
-
-nameInput.value = "";
-
-priceInput.value = "";
-
-await loadProducts();
+    status.innerHTML =
+        '<div class="status">⏳ جار إضافة المنتج...</div>';
 
 
-}catch(err){
+    const { error } =
+        await db
+            .from("products")
+            .insert([
+                {
+                    name:name,
+                    price:Number(price)
+                }
+            ]);
 
-console.error(err);
 
-status.innerHTML = `
-<div class="error">
-❌ حدث خطأ
-<br>
-<span class="small">
-${escapeHtml(err.message || String(err))}
-</span>
-</div>
-`;
+    if(error){
 
-}finally{
+        console.error(
+            "Insert error:",
+            error
+        );
 
-button.disabled = false;
+        status.innerHTML = `
+            <div class="status error">
+                ❌ فشل إضافة المنتج
+                <br><br>
+                ${escapeHtml(error.message)}
+                <br>
+                الكود:
+                ${escapeHtml(error.code || "غير معروف")}
+            </div>
+        `;
 
-button.textContent =
-"إضافة المنتج";
+        return;
+    }
 
-}
+
+    status.innerHTML =
+        '<div class="status success">✅ تمت إضافة المنتج بنجاح</div>';
+
+
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+
+
+    loadProducts();
 
 }
 
@@ -582,91 +541,84 @@ button.textContent =
    تعديل منتج
 ========================= */
 
-async function editProduct(
-id,
-oldName,
-oldPrice
-){
+async function editProduct(id,name,price){
 
-const name =
-prompt(
-"اسم المنتج:",
-oldName
-);
-
-if(name === null)return;
+    const newName =
+        prompt(
+            "اسم المنتج:",
+            name
+        );
 
 
-const cleanName =
-name.trim();
-
-if(!cleanName){
-
-alert("اسم المنتج لا يمكن أن يكون فارغًا");
-
-return;
-}
+    if(newName === null)
+        return;
 
 
-const priceText =
-prompt(
-"السعر بالليرة السورية:",
-oldPrice
-);
-
-if(priceText === null)return;
+    const newPrice =
+        prompt(
+            "السعر:",
+            price
+        );
 
 
-const price =
-Number(priceText);
-
-if(!Number.isFinite(price) || price <= 0){
-
-alert("السعر غير صحيح");
-
-return;
-}
+    if(newPrice === null)
+        return;
 
 
-try{
+    if(!newName.trim()){
 
-const { error } = await db
-.from("products")
-.update({
-name:cleanName,
-price:price
-})
-.eq("id",id);
+        alert("اسم المنتج لا يمكن أن يكون فارغاً");
+
+        return;
+
+    }
 
 
-if(error){
+    if(!newPrice || isNaN(newPrice)){
 
-console.error("Update error:", error);
+        alert("السعر غير صحيح");
 
-alert(
-"❌ لم يتم تعديل المنتج\n\n"
-+ error.message
-);
+        return;
 
-return;
-}
+    }
 
 
-alert("✅ تم تعديل المنتج");
+    const { error } =
+        await db
+            .from("products")
+            .update({
+                name:newName.trim(),
+                price:Number(newPrice)
+            })
+            .eq(
+                "id",
+                id
+            );
 
-loadProducts();
+
+    if(error){
+
+        console.error(
+            "Update error:",
+            error
+        );
+
+        alert(
+            "فشل تعديل المنتج:\n\n" +
+            error.message
+        );
+
+        return;
+
+    }
 
 
-}catch(err){
+    alert(
+        "✅ تم تعديل المنتج"
+    );
 
-console.error(err);
 
-alert(
-"❌ حدث خطأ\n\n"
-+ (err.message || String(err))
-);
-
-}
+    loadProducts();
 
 }
 
@@ -677,77 +629,92 @@ alert(
 
 async function deleteProduct(id){
 
-if(!confirm(
-"هل تريد حذف هذا المنتج؟"
-)){
-
-return;
-}
+    const confirmDelete =
+        confirm(
+            "هل أنت متأكد من حذف هذا المنتج؟"
+        );
 
 
-try{
-
-const { error } = await db
-.from("products")
-.delete()
-.eq("id",id);
+    if(!confirmDelete)
+        return;
 
 
-if(error){
-
-console.error("Delete error:", error);
-
-alert(
-"❌ لم يتم حذف المنتج\n\n"
-+ error.message
-);
-
-return;
-}
+    const { error } =
+        await db
+            .from("products")
+            .delete()
+            .eq(
+                "id",
+                id
+            );
 
 
-alert("✅ تم حذف المنتج");
+    if(error){
 
-loadProducts();
+        console.error(
+            "Delete error:",
+            error
+        );
 
+        alert(
+            "فشل حذف المنتج:\n\n" +
+            error.message
+        );
 
-}catch(err){
+        return;
 
-console.error(err);
-
-alert(
-"❌ حدث خطأ\n\n"
-+ (err.message || String(err))
-);
-
-}
-
-}
+    }
 
 
-/* =========================
-   حماية النصوص
-========================= */
+    alert(
+        "✅ تم حذف المنتج"
+    );
 
-function escapeHtml(text){
 
-return String(text)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+    loadProducts();
 
 }
 
 
 /* =========================
-   المتجر
+   Enter لتسجيل الدخول
 ========================= */
 
-function goStore(){
+document
+    .getElementById("password")
+    .addEventListener(
+        "keydown",
+        function(event){
 
-window.location.href = "/";
+            if(event.key === "Enter"){
+
+                login();
+
+            }
+
+        }
+    );
+
+
+/* =========================
+   فتح اللوحة إذا كان مسجل
+========================= */
+
+if(
+    sessionStorage.getItem(
+        "alwaleed_admin"
+    ) === "true"
+){
+
+    document
+        .getElementById("loginBox")
+        .classList.add("hidden");
+
+    document
+        .getElementById("adminPanel")
+        .classList.remove("hidden");
+
+    loadProducts();
 
 }
 
