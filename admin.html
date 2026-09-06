@@ -116,6 +116,26 @@ color:white;
 text-align:center;
 color:#aaa;
 padding:15px;
+line-height:1.8;
+}
+
+.error{
+color:#ff7777;
+text-align:center;
+margin-top:10px;
+line-height:1.7;
+}
+
+.success{
+color:#5cff91;
+text-align:center;
+padding:10px;
+}
+
+.small{
+font-size:13px;
+color:#aaa;
+word-break:break-word;
 }
 
 #login{
@@ -124,15 +144,16 @@ margin:80px auto;
 padding:25px;
 }
 
-.error{
-color:#ff7777;
-text-align:center;
-margin-top:10px;
+.loading{
+opacity:.7;
+pointer-events:none;
 }
 </style>
 </head>
 
 <body>
+
+<!-- تسجيل الدخول -->
 
 <div id="login" class="panel">
 
@@ -143,7 +164,9 @@ margin-top:10px;
 <input
 id="password"
 type="password"
-placeholder="أدخل كلمة المرور">
+placeholder="أدخل كلمة المرور"
+autocomplete="current-password"
+>
 
 <button class="add" onclick="login()">
 دخول
@@ -153,6 +176,8 @@ placeholder="أدخل كلمة المرور">
 
 </div>
 
+
+<!-- لوحة الإدارة -->
 
 <div id="admin" style="display:none">
 
@@ -172,6 +197,9 @@ placeholder="أدخل كلمة المرور">
 
 <h1>لوحة إدارة المنتجات</h1>
 
+
+<!-- إضافة منتج -->
+
 <div class="panel">
 
 <h2>➕ إضافة منتج</h2>
@@ -179,25 +207,40 @@ placeholder="أدخل كلمة المرور">
 <input
 id="name"
 type="text"
-placeholder="اسم المنتج">
+placeholder="اسم المنتج"
+>
 
 <input
 id="price"
 type="number"
-placeholder="السعر بالليرة السورية">
+min="0"
+step="1"
+placeholder="السعر بالليرة السورية"
+>
 
-<button class="add" onclick="addProduct()">
+<button
+id="addButton"
+class="add"
+onclick="addProduct()"
+>
 إضافة المنتج
 </button>
 
+<div id="addStatus"></div>
+
 </div>
+
+
+<!-- المنتجات -->
 
 <div class="panel">
 
 <h2>💎 المنتجات</h2>
 
 <div id="products">
-<div class="status">جار تحميل المنتجات...</div>
+<div class="status">
+جار تحميل المنتجات...
+</div>
 </div>
 
 </div>
@@ -208,48 +251,77 @@ placeholder="السعر بالليرة السورية">
 
 <script>
 
+/* =========================
+   إعدادات Supabase
+========================= */
+
 const SUPABASE_URL =
 "https://lxalfbcvibapprsyyrwd.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_Pij7dZ58tg5RaDIZFPbEzw_a5PB655X";
 
-const db =
-supabase.createClient(
+const db = supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
 
-/* كلمة مرور الإدارة */
+/* =========================
+   كلمة مرور الإدارة
+========================= */
 
 const ADMIN_PASSWORD = "0967300235Aa";
 
+
+/* =========================
+   تسجيل الدخول
+========================= */
 
 function login(){
 
 const password =
 document.getElementById("password").value;
 
+const error =
+document.getElementById("error");
+
 if(password === ADMIN_PASSWORD){
 
-document.getElementById("login").style.display="none";
+error.textContent = "";
 
-document.getElementById("admin").style.display="block";
+document.getElementById("login").style.display = "none";
+
+document.getElementById("admin").style.display = "block";
 
 loadProducts();
 
 }else{
 
-document.getElementById("error").textContent =
-"كلمة المرور غير صحيحة";
+error.textContent =
+"❌ كلمة المرور غير صحيحة";
 
 }
 
 }
 
 
-/* تحميل المنتجات */
+/* السماح بالضغط على Enter */
+
+document
+.getElementById("password")
+.addEventListener("keydown", function(e){
+
+if(e.key === "Enter"){
+login();
+}
+
+});
+
+
+/* =========================
+   تحميل المنتجات
+========================= */
 
 async function loadProducts(){
 
@@ -257,189 +329,405 @@ const box =
 document.getElementById("products");
 
 box.innerHTML =
-'<div class="status">جار تحميل المنتجات...</div>';
+'<div class="status">⏳ جار تحميل المنتجات...</div>';
 
-const {data,error} =
-await db
+try{
+
+const { data, error } = await db
 .from("products")
 .select("*")
-.order("created_at",{ascending:false});
+.order("created_at", {
+ascending:false
+});
 
 if(error){
 
-box.innerHTML =
-'<div class="status">حدث خطأ في تحميل المنتجات</div>';
+console.error("Supabase error:", error);
 
-console.error(error);
-
-return;
-}
-
-if(!data || data.length===0){
-
-box.innerHTML =
-'<div class="status">لا توجد منتجات</div>';
-
-return;
-}
-
-box.innerHTML="";
-
-data.forEach(product=>{
-
-box.innerHTML += `
-
-<div class="product">
-
-<div class="name">
-${escapeHtml(product.name)}
+box.innerHTML = `
+<div class="status error">
+❌ حدث خطأ في تحميل المنتجات
+<br><br>
+<div class="small">
+${escapeHtml(error.message)}
 </div>
-
-<div class="price">
-${Number(product.price).toLocaleString()} ل.س
+<br>
+<div class="small">
+الكود: ${escapeHtml(error.code || "غير متوفر")}
 </div>
-
-<button
-class="edit"
-onclick="editProduct('${product.id}',
-'${escapeHtml(product.name)}',
-${product.price})">
-✏️ تعديل
-</button>
-
-<button
-class="delete"
-onclick="deleteProduct('${product.id}')">
-🗑️ حذف
-</button>
-
 </div>
-
 `;
+
+return;
+}
+
+
+if(!data || data.length === 0){
+
+box.innerHTML =
+'<div class="status">📦 لا توجد منتجات حاليًا</div>';
+
+return;
+}
+
+
+box.innerHTML = "";
+
+data.forEach(product => {
+
+const item =
+document.createElement("div");
+
+item.className = "product";
+
+
+const name =
+document.createElement("div");
+
+name.className = "name";
+
+name.textContent =
+product.name || "بدون اسم";
+
+
+const price =
+document.createElement("div");
+
+price.className = "price";
+
+price.textContent =
+Number(product.price || 0).toLocaleString("ar-SY")
++ " ل.س";
+
+
+const edit =
+document.createElement("button");
+
+edit.className = "edit";
+
+edit.textContent = "✏️ تعديل";
+
+edit.onclick = function(){
+
+editProduct(
+product.id,
+product.name || "",
+product.price || 0
+);
+
+};
+
+
+const del =
+document.createElement("button");
+
+del.className = "delete";
+
+del.textContent = "🗑️ حذف";
+
+del.onclick = function(){
+
+deleteProduct(product.id);
+
+};
+
+
+item.appendChild(name);
+
+item.appendChild(price);
+
+item.appendChild(edit);
+
+item.appendChild(del);
+
+box.appendChild(item);
 
 });
 
+}catch(err){
+
+console.error(err);
+
+box.innerHTML = `
+<div class="status error">
+❌ تعذر الاتصال بقاعدة البيانات
+<br><br>
+<div class="small">
+${escapeHtml(err.message || String(err))}
+</div>
+</div>
+`;
+
+}
+
 }
 
 
-/* إضافة */
+/* =========================
+   إضافة منتج
+========================= */
 
 async function addProduct(){
 
+const nameInput =
+document.getElementById("name");
+
+const priceInput =
+document.getElementById("price");
+
+const status =
+document.getElementById("addStatus");
+
+const button =
+document.getElementById("addButton");
+
 const name =
-document.getElementById("name").value.trim();
+nameInput.value.trim();
 
 const price =
-Number(document.getElementById("price").value);
+Number(priceInput.value);
 
-if(!name || !price){
 
-alert("اكتب اسم المنتج والسعر");
+if(!name){
+
+status.innerHTML =
+'<div class="error">اكتب اسم المنتج</div>';
 
 return;
 }
 
-const {error} =
-await db
+
+if(!Number.isFinite(price) || price <= 0){
+
+status.innerHTML =
+'<div class="error">اكتب سعرًا صحيحًا</div>';
+
+return;
+}
+
+
+button.disabled = true;
+
+button.textContent =
+"⏳ جار الإضافة...";
+
+status.innerHTML = "";
+
+
+try{
+
+const { error } = await db
 .from("products")
-.insert([
-{
+.insert({
 name:name,
 price:price
-}
-]);
+});
+
 
 if(error){
 
-alert("لم تتم إضافة المنتج");
+console.error("Insert error:", error);
 
-console.error(error);
+status.innerHTML = `
+<div class="error">
+❌ لم تتم إضافة المنتج
+<br>
+<span class="small">
+${escapeHtml(error.message)}
+</span>
+</div>
+`;
 
 return;
 }
 
-alert("تمت إضافة المنتج ✅");
 
-document.getElementById("name").value="";
-document.getElementById("price").value="";
+status.innerHTML =
+'<div class="success">✅ تمت إضافة المنتج</div>';
 
-loadProducts();
+nameInput.value = "";
+
+priceInput.value = "";
+
+await loadProducts();
+
+
+}catch(err){
+
+console.error(err);
+
+status.innerHTML = `
+<div class="error">
+❌ حدث خطأ
+<br>
+<span class="small">
+${escapeHtml(err.message || String(err))}
+</span>
+</div>
+`;
+
+}finally{
+
+button.disabled = false;
+
+button.textContent =
+"إضافة المنتج";
+
+}
 
 }
 
 
-/* تعديل */
+/* =========================
+   تعديل منتج
+========================= */
 
-async function editProduct(id,oldName,oldPrice){
+async function editProduct(
+id,
+oldName,
+oldPrice
+){
 
 const name =
-prompt("اسم المنتج:",oldName);
+prompt(
+"اسم المنتج:",
+oldName
+);
 
-if(name===null)return;
+if(name === null)return;
+
+
+const cleanName =
+name.trim();
+
+if(!cleanName){
+
+alert("اسم المنتج لا يمكن أن يكون فارغًا");
+
+return;
+}
+
+
+const priceText =
+prompt(
+"السعر بالليرة السورية:",
+oldPrice
+);
+
+if(priceText === null)return;
+
 
 const price =
-prompt("السعر:",oldPrice);
+Number(priceText);
 
-if(price===null)return;
+if(!Number.isFinite(price) || price <= 0){
 
-const {error} =
-await db
+alert("السعر غير صحيح");
+
+return;
+}
+
+
+try{
+
+const { error } = await db
 .from("products")
 .update({
-name:name,
-price:Number(price)
+name:cleanName,
+price:price
 })
 .eq("id",id);
 
+
 if(error){
 
-alert("لم يتم تعديل المنتج");
+console.error("Update error:", error);
 
-console.error(error);
+alert(
+"❌ لم يتم تعديل المنتج\n\n"
++ error.message
+);
 
 return;
 }
 
-alert("تم تعديل المنتج ✅");
+
+alert("✅ تم تعديل المنتج");
 
 loadProducts();
 
+
+}catch(err){
+
+console.error(err);
+
+alert(
+"❌ حدث خطأ\n\n"
++ (err.message || String(err))
+);
+
+}
+
 }
 
 
-/* حذف */
+/* =========================
+   حذف منتج
+========================= */
 
 async function deleteProduct(id){
 
-if(!confirm("هل تريد حذف هذا المنتج؟")){
+if(!confirm(
+"هل تريد حذف هذا المنتج؟"
+)){
 
 return;
-
 }
 
-const {error} =
-await db
+
+try{
+
+const { error } = await db
 .from("products")
 .delete()
 .eq("id",id);
 
+
 if(error){
 
-alert("لم يتم حذف المنتج");
+console.error("Delete error:", error);
 
-console.error(error);
+alert(
+"❌ لم يتم حذف المنتج\n\n"
++ error.message
+);
 
 return;
 }
 
-alert("تم حذف المنتج ✅");
+
+alert("✅ تم حذف المنتج");
 
 loadProducts();
+
+
+}catch(err){
+
+console.error(err);
+
+alert(
+"❌ حدث خطأ\n\n"
++ (err.message || String(err))
+);
+
+}
 
 }
 
 
-/* حماية النص */
+/* =========================
+   حماية النصوص
+========================= */
 
 function escapeHtml(text){
 
@@ -453,11 +741,13 @@ return String(text)
 }
 
 
-/* المتجر */
+/* =========================
+   المتجر
+========================= */
 
 function goStore(){
 
-window.location.href="/";
+window.location.href = "/";
 
 }
 
